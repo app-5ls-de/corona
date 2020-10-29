@@ -1,25 +1,5 @@
-function f(url,callback) {
-    fetch(url)
-    .then((response) => {
-        if (response.ok) {
-            return Promise.resolve(response)
-        } else {
-            return Promise.reject(new Error(response.statusText))
-        }
-    })
-    .then((response) => {
-        return response.json()
-    })
-    .then(callback)
-    .catch((error) => {
-        console.log('Request failed', error)
-    })
-}
 
-
-var map = L.map('map', {
-    zoomSnap: 0
-}).setView([51.33061163769853,10.458984375000002], 6)
+map.setView([51.33061163769853,10.458984375000002], 6)
 
 
 var info = L.control()
@@ -46,32 +26,6 @@ info.update = function (props) {
 info.addTo(map)
 
 
-/* function onLocationFound(e) {
-    var myIcon = L.divIcon({className: 'location-icon'})
-    L.marker(e.latlng, {icon: myIcon}).addTo(map)
-}
-
-map.locate({setView: true, maxZoom: 16})
-
-map.on('locationfound', onLocationFound)
-
-function onLocationError(e) {
-    alert(e.message)
-}
-
-map.on('locationerror', onLocationError) */
-
-
-var legend = L.control({position: 'topleft'})
-
-legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend de')
-    div.innerHTML = '<a class="world" href="/world">world</a><a class="de" href="/de">de</a>'
-
-    return div
-}
-
-legend.addTo(map)
 
 
 var cases
@@ -103,84 +57,24 @@ f(URL_cases,(data) => {
 
 
 
-var Layer
-function draw() {
-    document.getElementById("spinner").style.display = "none"
+function getIncidence(feature) {
+    let GEN_id = feature.properties.GEN
 
-    function onEachFeature(feature, layer) {
-        layer.on({
-            mouseover: highlightFeature,
-            mouseout: resetHighlight,
-            click: zoomToFeature
-        })
-    }
+    if (GEN_id == "Berlin") GEN_id = "Berlin Pankow"
 
-    function highlightFeature(e) {
-        var layer = e.target
-    
-        layer.setStyle({
-            weight: 5,
-            color: '#666'
-        })
-    
-        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-            layer.bringToFront()
+    if (feature.properties.BEZ == "Landkreis" || feature.properties.BEZ == "Kreis") BEZ_id = "LK " + GEN_id 
+    else if (feature.properties.BEZ == "Kreisfreie Stadt" || feature.properties.BEZ == "Stadtkreis") BEZ_id = "SK " + GEN_id 
+    else throw feature
+
+    feature.properties.cases = cases.states[BEZ_id]
+    if (feature.properties.cases) {
+        weekIncidence = feature.properties.cases.weekIncidence
+    } else {
+        feature.properties.cases = cases.states[GEN_id]
+        if (feature.properties.cases) {
+            weekIncidence = feature.properties.cases.weekIncidence
         }
-
-        info.update(layer.feature.properties)
     }
 
-    function resetHighlight(e) {
-        Layer.resetStyle(e.target)
-
-        info.update()
-    }
-
-    function zoomToFeature(e) {
-        //map.fitBounds(e.target.getBounds())
-    }
-
-    Layer = L.geoJSON(geojson, {
-        onEachFeature: onEachFeature,
-        style: function(feature) {
-            let GEN_id = feature.properties.GEN
-
-            if (GEN_id == "Berlin") GEN_id = "Berlin Pankow"
-
-            if (feature.properties.BEZ == "Landkreis" || feature.properties.BEZ == "Kreis") BEZ_id = "LK " + GEN_id 
-            else if (feature.properties.BEZ == "Kreisfreie Stadt" || feature.properties.BEZ == "Stadtkreis") BEZ_id = "SK " + GEN_id 
-            else throw feature
-
-            feature.properties.cases = cases.states[BEZ_id]
-            if (feature.properties.cases) {
-                weekIncidence = feature.properties.cases.weekIncidence
-            } else {
-                feature.properties.cases = cases.states[GEN_id]
-                if (feature.properties.cases) {
-                    weekIncidence = feature.properties.cases.weekIncidence
-                } else {
-                    weekIncidence = -1
-                }
-            }
-            
-            if (weekIncidence < 0) color = "#a0a0a0"
-            else if (weekIncidence < 35) color = "#d5cc88"
-            else if (weekIncidence < 50) color = "#d29a33"
-            else if (weekIncidence < 100) color = "#b33034" 
-            else color = "#912521"
-
-            let options = {
-                radius: 8,
-                fillColor: color,
-                color: color == "#d5cc88" ? "#d4b35e" : color,
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
-            }
-
-            return options
-        }
-    })
-    Layer.addTo(map)
-    map.fitBounds(Layer.getBounds().pad(0.02))
+    return weekIncidence
 }
