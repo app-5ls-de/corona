@@ -18,30 +18,10 @@ function f(url,callback) {
 
 
 
-
-
 var selected = "kreise"    // ["bundesländer","kreise"]
 
 var map = L.map('map').setView([51.33061163769853,10.458984375000002], 6)
 
-
-/* var StamenTonerLines = new L.StamenTileLayer("toner-lite")
-map.addLayer(StamenTonerLines) */
-
-/* var OpenStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
- maxZoom: 19,
- attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-})
-OpenStreetMap.addTo(map) */
-
-/* var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-    maxZoom: 20,
-    attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-})
-Stadia_AlidadeSmoothDark.addTo(map) */
-
-// show the scale bar on the lower left corner
-//L.control.scale().addTo(map);
 
 var cases
 var geojson
@@ -50,7 +30,7 @@ if (selected == "bundesländer") {
     var URL_geojson = "https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/master/2_bundeslaender/4_niedrig.geo.json"
     var URL_cases = "https://cors-anywhere.herokuapp.com/https://rki-covid-api.now.sh/api/states"
 } else if (selected == "kreise") {
-    var URL_geojson = "https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/master/4_kreise/4_niedrig.geo.json"
+    var URL_geojson = "landkreise_simplify200.geojson" // from http://opendatalab.de/projects/geojson-utilities/
     var URL_cases = "https://cors-anywhere.herokuapp.com/https://rki-covid-api.now.sh/api/districts"
 }
 
@@ -92,35 +72,19 @@ function draw() {
                 element = cases.states[id]
                 weekIncidence = element.weekIncidence
             } else if (selected == "kreise") {
-                let id = feature.properties.NAME_3.replace(/ Städte$/,'')
+                let id = feature.properties.GEN
+
+                if (id == "Berlin") id = "Berlin Pankow"
+
                 element = cases.states[id]
                 if (element) {
                     weekIncidence = element.weekIncidence
                 } else {
-                    for (const key in cases.states) {
-                        if (cases.states.hasOwnProperty(key)) {
-                            if (key.startsWith(id)) {
-                                //if (element) console.log(key)
-                                element = cases.states[key];
-                                break
-                            }
-                        }
-                    }
-
-                    /* console.log(feature)
-                    console.log(id)
-                    */
-
-                    if (element) {
-                        weekIncidence = element.weekIncidence
-                    } else {
-                        weekIncidence = -1
-                        i++ 
-                    }
+                    weekIncidence = -1
                 }
             }
             
-            if (weekIncidence < 0) color = "#ffffff"
+            if (weekIncidence < 0) color = "#a0a0a0"
             else if (weekIncidence < 35) color = "#d5cc88"
             else if (weekIncidence < 50) color = "#d29a33"
             else if (weekIncidence < 100) color = "#b33034" 
