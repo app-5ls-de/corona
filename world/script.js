@@ -32,7 +32,7 @@ legend._div.classList.add("world")
 var cases
 var geojson
 
-var URL_geojson = "/world/world.geo.json" // from http://opendatalab.de/projects/geojson-utilities/
+var URL_geojson = "/world/world.geo.json" // from https://geojson-maps.ash.ms/
 var URL_cases = "https://disease.sh/v3/covid-19/countries"
 
 
