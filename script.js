@@ -22,7 +22,7 @@ function f(url,callback) {
 
 var selected = "kreise"    // ["bundesländer","kreise"]
 
-var map = L.map('map').setView([51.3, 10.2], 6)
+var map = L.map('map').setView([51.33061163769853,10.458984375000002], 6)
 
 
 /* var StamenTonerLines = new L.StamenTileLayer("toner-lite")
@@ -81,10 +81,10 @@ f(URL_cases,(data) => {
 })
 
 let i = 0
+var Layer
 function draw() {
     document.getElementById("spinner").style.display = "none"
-
-    L.geoJSON(geojson, {
+    Layer = L.geoJSON(geojson, {
         style: function(feature) {
             
             if (selected == "bundesländer") {
@@ -137,7 +137,9 @@ function draw() {
 
             return options
         }
-    }).addTo(map);
+    })
+    Layer.addTo(map)
+    map.fitBounds(Layer.getBounds().pad(0))
 }
 
 
