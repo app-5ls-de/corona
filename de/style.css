@@ -41,25 +41,37 @@ html, body, #map {
 
 .info {
     padding: 6px 8px;
-    /* font: 14px/16px Arial, Helvetica, sans-serif; */
+    min-width: 12rem;
     background: white;
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
 }
+
 .info h4 {
     margin: 0 0 5px;
-    color: #777;
+   /*  color: #777; */
+}
+
+.info.leaflet-control {
+    font-size: 1rem;
 }
 
 .legend {
-    line-height: 18px;
-    color: #555;
+    display: none;
+    min-width: 0;
 }
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
+
+.legend>a {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 5px;
+    color: black;
+    margin: 4px 0;
+}
+
+.legend.de>a.de {
+    background-color: #ff980091;
+    pointer-events: none;
 }

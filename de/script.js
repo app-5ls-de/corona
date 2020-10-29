@@ -31,13 +31,16 @@ info.onAdd = function (map) {
 }
 
 info.update = function (props) {
-    this._div.innerHTML = '<h4>Info</h4>' +  (props ?
-        '<b>' + props.cases.name + '</b><br>' +
+    if (props) {
+        this._div.style.display = ""
+        this._div.innerHTML = '<h4>' + props.cases.name + '</h4>' + 
         'weekIncidence: ' + props.cases.weekIncidence.toFixed(0) + '<br>' +
         'count: ' + props.cases.count + '<br>' +
         'deaths: ' + props.cases.deaths + '<br>' +
         'population: ' + props.destatis.population + '<br>' 
-        : '')
+    } else {
+        this._div.style.display = "none"
+    }
 }
 
 info.addTo(map)
@@ -59,17 +62,16 @@ function onLocationError(e) {
 map.on('locationerror', onLocationError) */
 
 
-var legend = L.control({position: 'bottomleft'})
+var legend = L.control({position: 'topleft'})
 
 legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend')
-    div.innerHTML = ""
+    var div = L.DomUtil.create('div', 'info legend de')
+    div.innerHTML = '<a class="world" href="/world">world</a><a class="de" href="/de">de</a>'
 
     return div
 }
 
 legend.addTo(map)
-
 
 
 var cases
