@@ -41,10 +41,10 @@ map.on('locationerror', onLocationError) */
 var legend = L.control({position: 'topleft'})
 
 legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend de')
-    div.innerHTML = '<a class="world" href="/world">world</a><a class="de" href="/de">de</a>'
+    this._div = L.DomUtil.create('div', 'info legend')
+    this._div.innerHTML = '<a class="world" href="/world">world</a><a class="de" href="/de">de</a>'
 
-    return div
+    return this._div
 }
 
 legend.addTo(map)

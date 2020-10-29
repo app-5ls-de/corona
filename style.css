@@ -58,7 +58,7 @@ html, body, #map {
 }
 
 .legend {
-    display: none;
+    /* display: none; */
     min-width: 0;
 }
 
@@ -71,7 +71,8 @@ html, body, #map {
     margin: 4px 0;
 }
 
-.legend.de>a.de {
+.legend.de>a.de,
+.legend.world>a.world {
     background-color: #ff980091;
     pointer-events: none;
 }

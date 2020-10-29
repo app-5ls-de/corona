@@ -25,13 +25,14 @@ info.update = function (props) {
 
 info.addTo(map)
 
+legend._div.classList.add("de")
 
 
 
 var cases
 var geojson
 
-var URL_geojson = "/de/landkreise_simplify2000.geojson" // from http://opendatalab.de/projects/geojson-utilities/
+var URL_geojson = "/de/landkreise_simplify.geo.json" // from http://opendatalab.de/projects/geojson-utilities/
 var URL_cases = "https://cors-anywhere.herokuapp.com/https://rki-covid-api.now.sh/api/districts"
 
 
