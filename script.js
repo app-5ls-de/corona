@@ -49,6 +49,22 @@ info.update = function (props) {
 info.addTo(map);
 
 
+/* function onLocationFound(e) {
+    var myIcon = L.divIcon({className: 'location-icon'})
+    L.marker(e.latlng, {icon: myIcon}).addTo(map)
+}
+
+map.locate({setView: true, maxZoom: 16});
+
+map.on('locationfound', onLocationFound);
+
+function onLocationError(e) {
+    alert(e.message);
+}
+
+map.on('locationerror', onLocationError); */
+
+
 /* var legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function (map) {
