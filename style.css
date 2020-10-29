@@ -58,7 +58,7 @@ html, body, #map {
 }
 
 .legend {
-    /* display: none; */
+    display: none;
     min-width: 0;
 }
 
