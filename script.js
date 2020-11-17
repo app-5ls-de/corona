@@ -159,7 +159,7 @@ info.update = function (props) {
             'Fälle: ' + props.cases.count + '<br>' +
             'Fälle/100k: ' + props.cases.casesPer100k.toFixed(0) + '<br>' +
             'Tode: ' + props.cases.deaths + '<br>' +
-            'Bevölkerung: ' + props.destatis.population + '<br>'
+            'Bevölkerung: ' + props.cases.population + '<br>'
     } else {
         this._div.style.display = "none"
     }
@@ -206,7 +206,7 @@ var URL_geojson = "/landkreise_simplify.geo.json" // from http://opendatalab.de/
 var URL_districts = "https://api.corona.app.5ls.de/districts"
 var URL_country = "https://api.corona.app.5ls.de/country"
 
-//URL_districts = "https://cors-anywhere.herokuapp.com/" + URL_districts; URL_country = "https://cors-anywhere.herokuapp.com/" + URL_country
+URL_districts = "https://cors-anywhere.herokuapp.com/" + URL_districts; URL_country = "https://cors-anywhere.herokuapp.com/" + URL_country
 
 f(URL_geojson, (data) => {
     geojson = data
