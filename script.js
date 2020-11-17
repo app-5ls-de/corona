@@ -203,8 +203,10 @@ var cases
 var geojson
 
 var URL_geojson = "/landkreise_simplify.geo.json" // from http://opendatalab.de/projects/geojson-utilities/
-var URL_cases = "https://api.corona.app.5ls.de/districts"
-//URL_cases = "https://cors-anywhere.herokuapp.com/" + URL_cases
+var URL_districts = "https://api.corona.app.5ls.de/districts"
+var URL_country = "https://api.corona.app.5ls.de/country"
+
+//URL_districts = "https://cors-anywhere.herokuapp.com/" + URL_districts; URL_country = "https://cors-anywhere.herokuapp.com/" + URL_country
 
 f(URL_geojson, (data) => {
     geojson = data
@@ -212,7 +214,7 @@ f(URL_geojson, (data) => {
     if (cases) draw()
 })
 
-f(URL_cases, (data) => {
+f(URL_districts, (data) => {
     cases = {
         lastUpdate: data.lastUpdate,
         states: {}
@@ -225,6 +227,24 @@ f(URL_cases, (data) => {
 
     if (geojson) draw()
 })
+
+
+var country_info = L.control({ position: 'bottomright' })
+
+country_info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div')
+    return this._div
+}
+
+country_info.addTo(map)
+
+f(URL_country, (data) => {
+    country_info._div.innerHTML = "DE vgl. Vortag: +" + data.diff
+    country_info._div.classList.add("info")
+
+})
+
+
 
 function getId(feature) {
     let GEN_id = feature.properties.GEN
