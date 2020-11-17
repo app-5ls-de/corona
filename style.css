@@ -41,11 +41,14 @@ html, body, #map {
 
 .info {
     padding: 6px 8px;
-    min-width: 12rem;
     background: white;
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
+}
+
+.info.minwidth {
+    min-width: 12rem;
 }
 
 .info h4 {
@@ -55,10 +58,6 @@ html, body, #map {
 
 .info.leaflet-control {
     font-size: 1rem;
-}
-
-.switcher {
-    min-width: 0;
 }
 
 .switcher>button {
@@ -72,15 +71,9 @@ html, body, #map {
     background-color: #ffffff;
 }
 
-
 .switcher.weekIncidence>button.weekIncidence,
 .switcher.casesPer100k>button.casesPer100k {
     background-color: #ff980091;
-}
-
-
-.legend {
-    min-width: 0;
 }
 
 .legend>.colorSquare {

@@ -158,7 +158,7 @@ map.setView([51.33061163769853, 10.458984375000002], 6)
 var info = L.control()
 
 info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info')
+    this._div = L.DomUtil.create('div', 'info minwidth')
     this.update()
     return this._div
 }
@@ -251,7 +251,9 @@ country_info.onAdd = function (map) {
 country_info.addTo(map)
 
 f(URL_country, (data) => {
-    country_info._div.innerHTML = "DE vgl. Vortag: +" + data.diff + "<br>" + "DE Inzidenz: " + data.weekIncidence.toFixed(0)
+    country_info._div.innerHTML = '<h4>' + "Bundesweit" + '</h4>' +
+        "diff. Vortag: +" + data.diff + "<br>" + 
+        "Inzidenz: " + data.weekIncidence.toFixed(0)
     country_info._div.classList.add("info")
 })
 
