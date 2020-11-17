@@ -74,7 +74,7 @@ html, body, #map {
 
 
 .switcher.weekIncidence>button.weekIncidence,
-.switcher.count>button.count {
+.switcher.casesPer100k>button.casesPer100k {
     background-color: #ff980091;
 }
 
