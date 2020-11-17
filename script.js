@@ -52,15 +52,19 @@ var Layer
 function draw() {
     document.getElementById("spinner").style.display = "none"
 
+    var locked = false
+
     function onEachFeature(feature, layer) {
         layer.on({
             mouseover: highlightFeature,
             mouseout: resetHighlight,
-            click: zoomToFeature
+            click: lockHighlight
         })
     }
 
     function highlightFeature(e) {
+        if (locked) return
+
         var layer = e.target
 
         layer.setStyle({
@@ -76,13 +80,17 @@ function draw() {
     }
 
     function resetHighlight(e) {
+        if (locked) return
         Layer.resetStyle(e.target)
 
         info.update()
     }
 
-    function zoomToFeature(e) {
-        //map.fitBounds(e.target.getBounds())
+    function lockHighlight(e) {
+        locked = false
+        Layer.resetStyle()
+        highlightFeature(e)
+        locked = true
     }
 
     Layer = L.geoJSON(geojson, {
@@ -137,7 +145,11 @@ function draw() {
     map.fitBounds(Layer.getBounds().pad(0.02))
 }
 
-
+map._controlContainer.onclick = (e) => {
+    locked = false
+    Layer.resetStyle()
+    info.update()
+}
 
 
 map.setView([51.33061163769853, 10.458984375000002], 6)
