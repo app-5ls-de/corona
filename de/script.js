@@ -14,10 +14,10 @@ info.update = function (props) {
     if (props) {
         this._div.style.display = ""
         this._div.innerHTML = '<h4>' + props.cases.name + '</h4>' + 
-        'weekIncidence: ' + props.cases.weekIncidence.toFixed(0) + '<br>' +
-        'count: ' + props.cases.count + '<br>' +
-        'deaths: ' + props.cases.deaths + '<br>' +
-        'population: ' + props.destatis.population + '<br>' 
+        'Inzidenz: ' + props.cases.weekIncidence.toFixed(0) + '<br>' +
+        'Fälle: ' + props.cases.count + '<br>' +
+        'Tode: ' + props.cases.deaths + '<br>' +
+        'Bevölkerung: ' + props.destatis.population + '<br>' 
     } else {
         this._div.style.display = "none"
     }
@@ -33,7 +33,7 @@ var cases
 var geojson
 
 var URL_geojson = "/de/landkreise_simplify.geo.json" // from http://opendatalab.de/projects/geojson-utilities/
-var URL_cases = "https://cors-anywhere.herokuapp.com/https://rki-covid-api.now.sh/api/districts"
+var URL_cases = "https://api.corona.app.5ls.de/districts"
 
 
 f(URL_geojson,(data) => {
