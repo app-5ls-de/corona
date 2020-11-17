@@ -71,12 +71,6 @@ html, body, #map {
     margin: 4px 0;
 }
 
-.switcher.de>a.de,
-.switcher.world>a.world {
-    background-color: #ff980091;
-    pointer-events: none;
-}
-
 .legend {
     min-width: 0;
 }
