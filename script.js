@@ -38,16 +38,16 @@ function onLocationError(e) {
 map.on('locationerror', onLocationError) */
 
 
-var legend = L.control({position: 'topleft'})
+var switcher = L.control({position: 'topleft'})
 
-legend.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info legend')
+switcher.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info switcher')
     this._div.innerHTML = '<a class="world" href="/world">world</a><a class="de" href="/de">de</a>'
 
     return this._div
 }
 
-legend.addTo(map)
+switcher.addTo(map)
 
 
 var Layer

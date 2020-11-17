@@ -57,12 +57,12 @@ html, body, #map {
     font-size: 1rem;
 }
 
-.legend {
+.switcher {
     display: none;
     min-width: 0;
 }
 
-.legend>a {
+.switcher>a {
     display: block;
     text-decoration: none;
     text-align: center;
@@ -71,8 +71,8 @@ html, body, #map {
     margin: 4px 0;
 }
 
-.legend.de>a.de,
-.legend.world>a.world {
+.switcher.de>a.de,
+.switcher.world>a.world {
     background-color: #ff980091;
     pointer-events: none;
 }

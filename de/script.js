@@ -25,7 +25,8 @@ info.update = function (props) {
 
 info.addTo(map)
 
-legend._div.classList.add("de")
+switcher._div.classList.add("de")
+
 
 
 
