@@ -37,12 +37,16 @@ function onLocationError(e) {
 
 map.on('locationerror', onLocationError) */
 
+//var style = "count"
+var style = "weekIncidence"
 
 var switcher = L.control({position: 'topleft'})
 
 switcher.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info switcher')
-    this._div.innerHTML = ''
+    if (style == "weekIncidence") this._div.classList.add("weekIncidence")
+    if (style == "count") this._div.classList.add("count")
+    this._div.innerHTML = '<button class="weekIncidence">Inzidenz</button><button class="count">Fälle</button>'
 
     return this._div
 }

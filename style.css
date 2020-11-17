@@ -58,18 +58,26 @@ html, body, #map {
 }
 
 .switcher {
-    display: none;
     min-width: 0;
 }
 
-.switcher>a {
+.switcher>button {
     display: block;
     text-decoration: none;
     text-align: center;
     border-radius: 5px;
     color: black;
     margin: 4px 0;
+    width: 100%;
+    background-color: #ffffff;
 }
+
+
+.switcher.weekIncidence>button.weekIncidence,
+.switcher.count>button.count {
+    background-color: #ff980091;
+}
+
 
 .legend {
     min-width: 0;
