@@ -172,7 +172,7 @@ var cases
 var geojson
 
 var URL_geojson = "/landkreise_simplify.geo.json" // from http://opendatalab.de/projects/geojson-utilities/
-var URL_cases = "https://cors-anywhere.herokuapp.com/https://api.corona.app.5ls.de/districts"
+var URL_cases = "https://api.corona.app.5ls.de/districts"
 
 
 f(URL_geojson,(data) => {
