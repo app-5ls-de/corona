@@ -168,8 +168,8 @@ info.update = function (props) {
         this._div.style.display = ""
         this._div.innerHTML = '<h4>' + props.cases.name + '</h4>' +
             'Inzidenz: ' + props.cases.weekIncidence.toFixed(0) + '<br>' +
-            'Fälle: ' + props.cases.count + '<br>' +
             'Fälle/100k: ' + props.cases.casesPer100k.toFixed(0) + '<br>' +
+            'Fälle: ' + props.cases.count + '<br>' +
             'Tode: ' + props.cases.deaths + '<br>' +
             'Bevölkerung: ' + props.cases.population + '<br>'
     } else {
