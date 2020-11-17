@@ -206,7 +206,7 @@ var URL_geojson = "/landkreise_simplify.geo.json" // from http://opendatalab.de/
 var URL_districts = "https://api.corona.app.5ls.de/districts"
 var URL_country = "https://api.corona.app.5ls.de/country"
 
-URL_districts = "https://cors-anywhere.herokuapp.com/" + URL_districts; URL_country = "https://cors-anywhere.herokuapp.com/" + URL_country
+//URL_districts = "https://cors-anywhere.herokuapp.com/" + URL_districts; URL_country = "https://cors-anywhere.herokuapp.com/" + URL_country
 
 f(URL_geojson, (data) => {
     geojson = data
