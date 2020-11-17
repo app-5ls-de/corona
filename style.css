@@ -76,3 +76,14 @@ html, body, #map {
     background-color: #ff980091;
     pointer-events: none;
 }
+
+.legend {
+    min-width: 0;
+}
+
+.legend>.colorSquare {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    opacity: 0.8;
+}

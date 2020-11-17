@@ -28,6 +28,24 @@ info.addTo(map)
 switcher._div.classList.add("de")
 
 
+var legend = L.control({position: 'bottomleft'})
+
+legend.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info legend')
+    this._HTML_1 = '\
+    <div class="colorSquare" style="background-color:#a0a0a0;"></div><span><0 </span><br> \
+    <div class="colorSquare" style="background-color:#d5cc88;"></div><span><35</span><br> \
+    <div class="colorSquare" style="background-color:#d29a33;"></div><span><50</span><br> \
+    <div class="colorSquare" style="background-color:#b33034;"></div><span><100</span><br> \
+    <div class="colorSquare" style="background-color:#912521;"></div><span>>100</span><br> \
+    '
+    return this._div
+}
+
+legend.addTo(map)
+
+
+legend._div.innerHTML = legend._HTML_1
 
 
 var cases
