@@ -251,9 +251,8 @@ country_info.onAdd = function (map) {
 country_info.addTo(map)
 
 f(URL_country, (data) => {
-    country_info._div.innerHTML = "DE vgl. Vortag: +" + data.diff
+    country_info._div.innerHTML = "DE vgl. Vortag: +" + data.diff + "<br>" + "DE Inzidenz: " + data.weekIncidence.toFixed(0)
     country_info._div.classList.add("info")
-
 })
 
 
