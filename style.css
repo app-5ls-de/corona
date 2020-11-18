@@ -88,3 +88,11 @@ html, body, #map {
     font-size: small;
     color: #717171;
 }
+
+.label, .value {
+    display: inline;
+}
+
+.value {
+    float: right;
+}

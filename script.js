@@ -167,11 +167,12 @@ info.update = function (props) {
     if (props) {
         this._div.style.display = ""
         this._div.innerHTML = '<h4>' + props.cases.name + '</h4>' +
-            'Inzidenz: ' + props.cases.weekIncidence.toFixed(0) + '<br>' +
-            'Fälle/100k: ' + props.cases.casesPer100k.toFixed(0) + '<br>' +
-            'Fälle: ' + props.cases.count + '<br>' +
-            'Tode: ' + props.cases.deaths + '<br>' +
-            'Bevölkerung: ' + props.cases.population + '<br>' +
+            createHtmlToDisplay("Inzidenz", props.cases.weekIncidence.toFixed(0)) +
+            createHtmlToDisplay("Fälle/100k", props.cases.casesPer100k.toFixed(0)) +
+            "<hr>" +
+            createHtmlToDisplay("Fälle", props.cases.count) +
+            createHtmlToDisplay("Tode", props.cases.deaths) +
+            createHtmlToDisplay("Bevölkerung", props.cases.population) +
             "<div class='date'>" + cases.lastUpdate + "</div>"
     } else {
         this._div.style.display = "none"
@@ -253,13 +254,15 @@ country_info.addTo(map)
 
 f(URL_country, (data) => {
     country_info._div.innerHTML = '<h4>' + "Bundesweit" + '</h4>' +
-        "diff. Vortag: +" + data.diff + "<br>" + 
-        "Inzidenz: " + data.weekIncidence.toFixed(0) + "<br>" +
+        createHtmlToDisplay("diff. Vortag", "+" + data.diff) +
+        createHtmlToDisplay("Inzidenz", data.weekIncidence.toFixed(0)) +
         "<div class='date'>" + data.lastUpdate + "</div>"
     country_info._div.classList.add("info")
 })
 
-
+function createHtmlToDisplay(label, value) {
+    return "<div class='label'>" + label + ": </div><div class='value'>" + value + "</div><br>"
+}
 
 function getId(feature) {
     let GEN_id = feature.properties.GEN
