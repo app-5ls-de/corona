@@ -171,7 +171,8 @@ info.update = function (props) {
             'Fälle/100k: ' + props.cases.casesPer100k.toFixed(0) + '<br>' +
             'Fälle: ' + props.cases.count + '<br>' +
             'Tode: ' + props.cases.deaths + '<br>' +
-            'Bevölkerung: ' + props.cases.population + '<br>'
+            'Bevölkerung: ' + props.cases.population + '<br>' +
+            "<div class='date'>" + cases.lastUpdate + "</div>"
     } else {
         this._div.style.display = "none"
     }
@@ -253,7 +254,8 @@ country_info.addTo(map)
 f(URL_country, (data) => {
     country_info._div.innerHTML = '<h4>' + "Bundesweit" + '</h4>' +
         "diff. Vortag: +" + data.diff + "<br>" + 
-        "Inzidenz: " + data.weekIncidence.toFixed(0)
+        "Inzidenz: " + data.weekIncidence.toFixed(0) + "<br>" +
+        "<div class='date'>" + data.lastUpdate + "</div>"
     country_info._div.classList.add("info")
 })
 

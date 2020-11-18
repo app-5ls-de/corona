@@ -82,3 +82,9 @@ html, body, #map {
     display: inline-block;
     opacity: 0.8;
 }
+
+.date {
+    text-align: center;
+    font-size: small;
+    color: #717171;
+}
