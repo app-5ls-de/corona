@@ -47,12 +47,12 @@ switcher.onAdd = function (map) {
 
 switcher.addTo(map)
 
+var locked = false
 
 var Layer
 function draw() {
     document.getElementById("spinner").style.display = "none"
 
-    var locked = false
 
     function onEachFeature(feature, layer) {
         layer.on({
