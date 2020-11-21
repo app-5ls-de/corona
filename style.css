@@ -94,6 +94,10 @@ html, body, #map {
     display: inline;
 }
 
+.label {
+    margin-right: 0.5rem;
+}
+
 .value {
     float: right;
 }
