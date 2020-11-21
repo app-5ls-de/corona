@@ -72,7 +72,8 @@ html, body, #map {
 }
 
 .switcher.weekIncidence>button.weekIncidence,
-.switcher.casesPer100k>button.casesPer100k {
+.switcher.casesPer100k>button.casesPer100k,
+.switcher.intensivbetten>button.intensivbetten {
     background-color: #ff980091;
 }
 

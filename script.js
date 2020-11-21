@@ -24,23 +24,41 @@ var map = L.map('map', {
 
 var style = "weekIncidence"
 //var style = "casesPer100k"
+//var style = "intensivbetten"
 
 function styleSwitch(e) {
-    if (!["weekIncidence", "casesPer100k"].includes(e.id)) return
+    if (!["weekIncidence", "casesPer100k", "intensivbetten"].includes(e.id)) return
     style = e.id
     switcher.addTo(map)
     legend.addTo(map)
     Layer.resetStyle()
+
+    if (style == "intensivbetten" && !intensivbetten) {
+        f(URL_intensivbetten, (data) => {
+            intensivbetten = {
+                lastUpdate: data.lastUpdate,
+                districts: {}
+            }
+
+            data.districts.forEach(element => {
+                intensivbetten.districts[element.county] = element
+            })
+
+            Layer.resetStyle()
+        })
+    }
 }
 
 var switcher = L.control({ position: 'topleft' })
 
 switcher.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info switcher')
-    if (style == "weekIncidence") this._div.classList.add("weekIncidence")
-    if (style == "casesPer100k") this._div.classList.add("casesPer100k")
+    this._div.classList.add(style)
 
-    this._div.innerHTML = '<button onclick="styleSwitch(this)" id="weekIncidence" class="weekIncidence">Inzidenz</button><button onclick="styleSwitch(this)" id="casesPer100k" class="casesPer100k">Fälle/100k</button>'
+    this._div.innerHTML = '<button onclick="styleSwitch(this)" id="weekIncidence" class="weekIncidence">Inzidenz</button>' +
+        '<button onclick="styleSwitch(this)" id="casesPer100k" class="casesPer100k">Fälle/100k</button>' +
+        '<button onclick="styleSwitch(this)" id="intensivbetten" class="intensivbetten">Intensivbetten</button>' +
+        '<button onclick="location.href=' + "'/timeline'" + '" id="timeline" class="timeline">Timeline</button>'
 
     return this._div
 }
@@ -128,6 +146,19 @@ function draw() {
                 else if (weekIncidence < 100) color = "#bb5220"
                 else if (weekIncidence < 200) color = "#af2632"
                 else color = "#8c0619"
+            } else if (style == "intensivbetten") {
+                if (intensivbetten) {
+                    let district = intensivbetten.districts[id]
+                    if (district) {
+
+                        let anteil_freier_betten = district.anteil_freier_betten
+                        color = "#bb5220"
+                        if (anteil_freier_betten < 0) color = "#a0a0a0"
+                        else if (anteil_freier_betten < 0.1) color = "#c63520"
+                        else if (anteil_freier_betten < 0.25) color = "#d19443"
+                        else color = "#338c06"
+                    }
+                }
             }
 
             let options = {
@@ -166,14 +197,18 @@ info.onAdd = function (map) {
 info.update = function (props) {
     if (props) {
         this._div.style.display = ""
-        this._div.innerHTML = '<h4>' + props.cases.name + '</h4>' +
-            createHtmlToDisplay("Inzidenz", props.cases.weekIncidence.toFixed(0)) +
-            createHtmlToDisplay("Fälle/100k", props.cases.casesPer100k.toFixed(0)) +
-            "<hr>" +
-            createHtmlToDisplay("Fälle", props.cases.count) +
-            createHtmlToDisplay("Tode", props.cases.deaths) +
-            createHtmlToDisplay("Bevölkerung", props.cases.population) +
-            "<div class='date'>" + cases.lastUpdate + "</div>"
+        if (style != "intensivbetten") {
+            this._div.innerHTML = '<h4>' + props.cases.name + '</h4>' +
+                createHtmlToDisplay("Inzidenz", props.cases.weekIncidence.toFixed(0)) +
+                createHtmlToDisplay("Fälle/100k", props.cases.casesPer100k.toFixed(0)) +
+                "<hr>" +
+                createHtmlToDisplay("Fälle", props.cases.count) +
+                createHtmlToDisplay("Tode", props.cases.deaths) +
+                createHtmlToDisplay("Bevölkerung", props.cases.population) +
+                "<div class='date'>" + cases.lastUpdate + "</div>"
+        } else {
+            this._div.innerHTML = "hi"
+        }
     } else {
         this._div.style.display = "none"
     }
@@ -204,6 +239,8 @@ legend.onAdd = function (map) {
         <div class="colorSquare" style="background-color:#2d6e9d;"></div><span><1600</span><br> \
         <div class="colorSquare" style="background-color:#0c4783;"></div><span>>1600</span><br> \
         '
+    } else if (style == "intensivbetten") {
+        this._div.innerHTML = "legend"
     }
     return this._div
 }
@@ -215,10 +252,12 @@ legend.addTo(map)
 
 var cases
 var geojson
+var intensivbetten
 
 var URL_geojson = "/landkreise_simplify.geo.json" // from http://opendatalab.de/projects/geojson-utilities/
 var URL_districts = "https://api.corona.app.5ls.de/districts"
 var URL_country = "https://api.corona.app.5ls.de/country"
+var URL_intensivbetten = "https://api.corona.app.5ls.de/intensivbetten"
 
 //URL_districts = "https://cors-anywhere.herokuapp.com/" + URL_districts; URL_country = "https://cors-anywhere.herokuapp.com/" + URL_country
 
@@ -253,7 +292,7 @@ country_info.onAdd = function (map) {
 country_info.addTo(map)
 
 f(URL_country, (data) => {
-    country_info._div.innerHTML = '<a href="/timeline" style="color: black;text-decoration: none;">' + 
+    country_info._div.innerHTML = '<a href="/timeline" style="color: black;text-decoration: none;">' +
         '<h4>' + "Bundesweit" + '</h4>' +
         createHtmlToDisplay("diff. Vortag", "+" + data.diff) +
         createHtmlToDisplay("Inzidenz", data.weekIncidence.toFixed(0)) +
