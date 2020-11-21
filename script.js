@@ -154,8 +154,8 @@ function draw() {
 
                         let anteil_freier_betten = district.anteil_freier_betten
                         if (anteil_freier_betten < 0) color = "#a0a0a0"
-                        else if (anteil_freier_betten < 0.1) color = "#c63520"
-                        else if (anteil_freier_betten < 0.25) color = "#d19443"
+                        else if (anteil_freier_betten < 10) color = "#c63520"
+                        else if (anteil_freier_betten < 25) color = "#d19443"
                         else color = "#338c06"
                     }
                 }
@@ -210,9 +210,9 @@ info.update = function (props) {
             this._div.innerHTML = '<h4>' + props.cases.name + '</h4>'
             if (props.intensivbetten) {
                 this._div.innerHTML = this._div.innerHTML +
-                createHtmlToDisplay("anteil_freier_betten", props.intensivbetten.anteil_freier_betten.toFixed(3)) +
+                createHtmlToDisplay("anteil_freier_betten", props.intensivbetten.anteil_freier_betten) +
                 createHtmlToDisplay("anteil_covid_beatmet", props.intensivbetten.anteil_covid_beatmet) +
-                createHtmlToDisplay("anteil_covid_betten", props.intensivbetten.anteil_covid_betten.toFixed(3)) +
+                createHtmlToDisplay("anteil_covid_betten", props.intensivbetten.anteil_covid_betten) +
                 "<hr>" +
                 createHtmlToDisplay("anzahl_meldebereiche", props.intensivbetten.anzahl_meldebereiche) +
                 createHtmlToDisplay("betten_frei", props.intensivbetten.betten_frei) +
