@@ -255,6 +255,7 @@ legend.onAdd = function (map) {
         '
     } else if (style == "intensivbetten") {
         this._div.innerHTML = '\
+        <div>Anteil freier Betten</div>\
         <div class="colorSquare" style="background-color:#a0a0a0;"></div><span>Keine Daten</span><br> \
         <div class="colorSquare" style="background-color:#c63520;"></div><span><10%</span><br> \
         <div class="colorSquare" style="background-color:#d19443;"></div><span><25%</span><br> \
