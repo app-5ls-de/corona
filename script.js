@@ -150,9 +150,9 @@ function draw() {
                 if (intensivbetten) {
                     let district = intensivbetten.districts[id]
                     if (district) {
+                        feature.properties.intensivbetten = district
 
                         let anteil_freier_betten = district.anteil_freier_betten
-                        color = "#bb5220"
                         if (anteil_freier_betten < 0) color = "#a0a0a0"
                         else if (anteil_freier_betten < 0.1) color = "#c63520"
                         else if (anteil_freier_betten < 0.25) color = "#d19443"
@@ -207,7 +207,21 @@ info.update = function (props) {
                 createHtmlToDisplay("Bevölkerung", props.cases.population) +
                 "<div class='date'>" + cases.lastUpdate + "</div>"
         } else {
-            this._div.innerHTML = "hi"
+            this._div.innerHTML = '<h4>' + props.cases.name + '</h4>'
+            if (props.intensivbetten) {
+                this._div.innerHTML = this._div.innerHTML +
+                createHtmlToDisplay("anteil_freier_betten", props.intensivbetten.anteil_freier_betten.toFixed(3)) +
+                createHtmlToDisplay("anteil_covid_beatmet", props.intensivbetten.anteil_covid_beatmet) +
+                createHtmlToDisplay("anteil_covid_betten", props.intensivbetten.anteil_covid_betten.toFixed(3)) +
+                "<hr>" +
+                createHtmlToDisplay("anzahl_meldebereiche", props.intensivbetten.anzahl_meldebereiche) +
+                createHtmlToDisplay("betten_frei", props.intensivbetten.betten_frei) +
+                createHtmlToDisplay("betten_belegt", props.intensivbetten.betten_belegt) +
+                createHtmlToDisplay("betten_gesamt", props.intensivbetten.betten_gesamt) +
+                createHtmlToDisplay("faelle_covid_aktuell", props.intensivbetten.faelle_covid_aktuell) +
+                createHtmlToDisplay("faelle_covid_aktuell_beatmet", props.intensivbetten.faelle_covid_aktuell_beatmet) +
+                "<div class='date'>" + intensivbetten.lastUpdate + "</div>"
+            }
         }
     } else {
         this._div.style.display = "none"
@@ -240,7 +254,12 @@ legend.onAdd = function (map) {
         <div class="colorSquare" style="background-color:#0c4783;"></div><span>>1600</span><br> \
         '
     } else if (style == "intensivbetten") {
-        this._div.innerHTML = "legend"
+        this._div.innerHTML = '\
+        <div class="colorSquare" style="background-color:#a0a0a0;"></div><span>Keine Daten</span><br> \
+        <div class="colorSquare" style="background-color:#c63520;"></div><span><10%</span><br> \
+        <div class="colorSquare" style="background-color:#d19443;"></div><span><25%</span><br> \
+        <div class="colorSquare" style="background-color:#338c06;"></div><span>>25%</span><br> \
+        '
     }
     return this._div
 }
