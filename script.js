@@ -253,9 +253,11 @@ country_info.onAdd = function (map) {
 country_info.addTo(map)
 
 f(URL_country, (data) => {
-    country_info._div.innerHTML = '<h4>' + "Bundesweit" + '</h4>' +
+    country_info._div.innerHTML = '<a href="/timeline" style="color: black;text-decoration: none;">' + 
+        '<h4>' + "Bundesweit" + '</h4>' +
         createHtmlToDisplay("diff. Vortag", "+" + data.diff) +
         createHtmlToDisplay("Inzidenz", data.weekIncidence.toFixed(0)) +
+        "</a>" +
         "<div class='date'>" + data.lastUpdate + "</div>"
     country_info._div.classList.add("info")
 })

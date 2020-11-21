@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div id="container" style="width:100%; height:90vh;"></div>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+        function f(url, callback) {
+            fetch(url)
+                .then((response) => {
+                    if (response.ok) {
+                        return Promise.resolve(response)
+                    } else {
+                        return Promise.reject(new Error(response.statusText))
+                    }
+                })
+                .then((response) => {
+                    return response.json()
+                })
+                .then(callback)
+                .catch((error) => {
+                    console.log('Request failed', error)
+                })
+        }
+
+        var timeline_data = {
+            labels: [],
+            series: []
+        }
+
+        var URL_timeline = "https://api.corona.app.5ls.de/timeline"
+        //URL_timeline = "https://cors-anywhere.herokuapp.com/" + URL_timeline
+
+        f(URL_timeline, (data) => {
+            labels = []
+            series = {
+                confirmed: [],
+                deaths: [],
+                recovered: [],
+                active: [],
+                diff: []
+            }
+
+            data.timeline.forEach(element => {
+                let dateSplit = element.Date.split("-")
+                let label = dateSplit[2].split("T")[0] + "." + dateSplit[1]
+
+                labels.push(label)
+                series.confirmed.push(element.confirmed)
+                series.deaths.push(element.deaths)
+                series.recovered.push(element.recovered)
+                series.active.push(element.active)
+                series.diff.push(element.diff)
+            })
+
+            timeline_data.labels = labels
+
+            for (const key in series) {
+                if (series.hasOwnProperty(key)) {
+                    timeline_data.series.push({
+                        name: key,
+                        data: series[key]
+                    })
+                }
+            }
+
+            plot()
+        })
+
+
+        function plot() {
+
+            const chart = Highcharts.chart('container', {
+                chart: {
+                    /* type: 'area' */
+                    scrollablePlotArea: {
+                        minWidth: 700
+                    }
+                },
+                chart: {
+                    zoomType: 'x'
+                },
+                title: {
+                    text: 'Timeline'
+                },
+                subtitle: {
+                    text: document.ontouchstart === undefined ?
+                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                },
+                tooltip: {
+                    shared: true,
+                    crosshairs: true
+                },
+                xAxis: {
+                    type: 'datetime',
+                    categories: timeline_data.labels
+                },
+                yAxis: {
+                    title: {
+                        text: 'Fälle'
+                    }
+                },
+
+                series: timeline_data.series
+            });
+        }
+    </script>
+</body>
+
+</html>
