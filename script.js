@@ -174,7 +174,7 @@ function draw() {
         attribution: 'Quellen: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html/">RKI</a> & \
         <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/917fc37a709542548cc3be077a786c17_0/data">RKI</a>, \
         Intensivbetten: <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/8fc79b6cf7054b1b80385bda619f39b8_0/data">DIVI</a>, \
-        Timeline: <a href="https://covid19api.com/">covid19api.com</a>',
+        Timeline: <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE</a> (via: <a href="https://covid19api.com/">covid19api.com</a>)',
 
     })
     Layer.addTo(map)
