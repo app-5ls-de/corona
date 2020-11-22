@@ -322,7 +322,7 @@ f(URL_country, (data) => {
         createHtmlToDisplay("diff. Vortag", "+" + data.diff) +
         createHtmlToDisplay("Inzidenz", data.weekIncidence.toFixed(0)) +
         "</a>" +
-        "<div class='date'>" + data.lastUpdate + "</div>"
+        "<div class='date'>" + data.lastUpdate + " (8:30Uhr)</div>"
     country_info._div.classList.add("info")
 })
 
