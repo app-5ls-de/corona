@@ -219,12 +219,12 @@ info.update = function (props) {
                     createHtmlToDisplay("Anteil Covid beatmet", props.intensivbetten.anteil_covid_beatmet + "%") +
                     createHtmlToDisplay("Anteil Covid betten", props.intensivbetten.anteil_covid_betten + "%") +
                     "<hr>" +
-                    createHtmlToDisplay("Anzahl Meldebereiche", props.intensivbetten.anzahl_meldebereiche) +
                     createHtmlToDisplay("Betten frei", props.intensivbetten.betten_frei) +
                     createHtmlToDisplay("Betten belegt", props.intensivbetten.betten_belegt) +
                     createHtmlToDisplay("Betten gesamt", props.intensivbetten.betten_gesamt) +
                     createHtmlToDisplay("Fälle Covid aktuell", props.intensivbetten.faelle_covid_aktuell) +
                     createHtmlToDisplay("Fälle Covid aktuell beatmet", props.intensivbetten.faelle_covid_aktuell_beatmet) +
+                    createHtmlToDisplay("Anzahl Meldebereiche", props.intensivbetten.anzahl_meldebereiche) +
                     "<div class='date'>" + intensivbetten.lastUpdate + "</div>"
             }
         }
