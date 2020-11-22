@@ -215,17 +215,17 @@ info.update = function (props) {
             this._div.innerHTML = '<h4>' + props.cases.name + '</h4>'
             if (props.intensivbetten) {
                 this._div.innerHTML = this._div.innerHTML +
-                createHtmlToDisplay("anteil_freier_betten", props.intensivbetten.anteil_freier_betten) +
-                createHtmlToDisplay("anteil_covid_beatmet", props.intensivbetten.anteil_covid_beatmet) +
-                createHtmlToDisplay("anteil_covid_betten", props.intensivbetten.anteil_covid_betten) +
-                "<hr>" +
-                createHtmlToDisplay("anzahl_meldebereiche", props.intensivbetten.anzahl_meldebereiche) +
-                createHtmlToDisplay("betten_frei", props.intensivbetten.betten_frei) +
-                createHtmlToDisplay("betten_belegt", props.intensivbetten.betten_belegt) +
-                createHtmlToDisplay("betten_gesamt", props.intensivbetten.betten_gesamt) +
-                createHtmlToDisplay("faelle_covid_aktuell", props.intensivbetten.faelle_covid_aktuell) +
-                createHtmlToDisplay("faelle_covid_aktuell_beatmet", props.intensivbetten.faelle_covid_aktuell_beatmet) +
-                "<div class='date'>" + intensivbetten.lastUpdate + "</div>"
+                    createHtmlToDisplay("Anteil freier Betten", props.intensivbetten.anteil_freier_betten + "%") +
+                    createHtmlToDisplay("Anteil Covid beatmet", props.intensivbetten.anteil_covid_beatmet + "%") +
+                    createHtmlToDisplay("Anteil Covid betten", props.intensivbetten.anteil_covid_betten + "%") +
+                    "<hr>" +
+                    createHtmlToDisplay("Anzahl Meldebereiche", props.intensivbetten.anzahl_meldebereiche) +
+                    createHtmlToDisplay("Betten frei", props.intensivbetten.betten_frei) +
+                    createHtmlToDisplay("Betten belegt", props.intensivbetten.betten_belegt) +
+                    createHtmlToDisplay("Betten gesamt", props.intensivbetten.betten_gesamt) +
+                    createHtmlToDisplay("Fälle Covid aktuell", props.intensivbetten.faelle_covid_aktuell) +
+                    createHtmlToDisplay("Fälle Covid aktuell beatmet", props.intensivbetten.faelle_covid_aktuell_beatmet) +
+                    "<div class='date'>" + intensivbetten.lastUpdate + "</div>"
             }
         }
     } else {
