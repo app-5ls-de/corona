@@ -101,3 +101,18 @@ html, body, #map {
 .value {
     float: right;
 }
+
+.attribution {
+    display: inline;
+}
+
+.attribution.max-small {
+    display: none;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .attribution.min-large {
+        display: none;
+    }
+}
