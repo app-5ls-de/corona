@@ -36,37 +36,37 @@
         //URL_timeline = "https://cors-anywhere.herokuapp.com/" + URL_timeline
 
         f(URL_timeline, (data) => {
-            labels = []
-            series = {
-                confirmed: [],
-                deaths: [],
-                recovered: [],
-                active: [],
-                diff: []
-            }
+            timeline_data.labels = []
+            timeline_data.series = [{
+                name: "confirmed",
+                data: [],
+                visible: false
+            }, {
+                name: "recovered",
+                data: [],
+                visible: false
+            }, {
+                name: "active",
+                data: []
+            }, {
+                name: "deaths",
+                data: []
+            }, {
+                name: "diff",
+                data: []
+            }]
 
             data.timeline.forEach(element => {
                 let dateSplit = element.date.split("-")
                 let label = dateSplit[2].split("T")[0] + "." + dateSplit[1]
 
-                labels.push(label)
-                series.confirmed.push(element.confirmed)
-                series.recovered.push(element.recovered)
-                series.active.push(element.active)
-                series.deaths.push(element.deaths)
-                series.diff.push(element.diff)
+                timeline_data.labels.push(label)
+                timeline_data.series[0].data.push(element.confirmed)
+                timeline_data.series[1].data.push(element.recovered)
+                timeline_data.series[2].data.push(element.active)
+                timeline_data.series[3].data.push(element.deaths)
+                timeline_data.series[4].data.push(element.diff)
             })
-
-            timeline_data.labels = labels
-
-            for (const key in series) {
-                if (series.hasOwnProperty(key)) {
-                    timeline_data.series.push({
-                        name: key,
-                        data: series[key]
-                    })
-                }
-            }
 
             plot()
         })
