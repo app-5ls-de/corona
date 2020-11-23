@@ -106,11 +106,6 @@ html, body, #map {
     display: inline;
 }
 
-.attribution.max-medium {
-    display: none;
-}
-
-
 @media only screen and (max-width: 600px) {
     .attribution.min-large {
         display: none;
@@ -123,7 +118,13 @@ html, body, #map {
     }
 }
 
-@media only screen and (max-width: 200px) {
+@media only screen and (min-width: 500px) {
+    .attribution.max-medium {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 400px) {
     .attribution.min-small {
         display: none;
     }
