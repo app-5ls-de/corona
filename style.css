@@ -106,13 +106,25 @@ html, body, #map {
     display: inline;
 }
 
-.attribution.max-small {
+.attribution.max-medium {
     display: none;
 }
 
 
 @media only screen and (max-width: 600px) {
     .attribution.min-large {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .attribution.min-medium {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 200px) {
+    .attribution.min-small {
         display: none;
     }
 }
