@@ -173,8 +173,8 @@ function draw() {
         },
         attribution: 'Quellen: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html/" target="_blank">RKI</a> & \
         <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/917fc37a709542548cc3be077a786c17_0/data" target="_blank">RKI</a>, \
-        Intensivbetten: <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/8fc79b6cf7054b1b80385bda619f39b8_0/data" target="_blank">DIVI</a>, \
-        Timeline: <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank">Johns Hopkins CSSE</a> (via: <a href="https://covid19api.com/" target="_blank">covid19api.com</a>)',
+        <div class="attribution min-large">Intensivbetten: </div><a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/8fc79b6cf7054b1b80385bda619f39b8_0/data" target="_blank">DIVI</a>, \
+        <div class="attribution min-large">Timeline: </div><a href="https://github.com/CSSEGISandData/COVID-19" target="_blank"><div class="attribution min-medium">Johns Hopkins CSSE</div><div class="attribution max-medium">JHU</div></a><div class="attribution min-small"> (via: <a href="https://covid19api.com/" target="_blank">covid19api.com</a>)</div>',
 
     })
     Layer.addTo(map)
