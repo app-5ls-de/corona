@@ -216,8 +216,8 @@ info.update = function (props) {
             if (props.intensivbetten) {
                 this._div.innerHTML = this._div.innerHTML +
                     createHtmlToDisplay("Anteil freier Betten", props.intensivbetten.anteil_freier_betten + "%") +
+                    createHtmlToDisplay("Anteil Covid Betten", props.intensivbetten.anteil_covid_betten + "%") +
                     createHtmlToDisplay("Anteil Covid beatmet", props.intensivbetten.anteil_covid_beatmet + "%") +
-                    createHtmlToDisplay("Anteil Covid betten", props.intensivbetten.anteil_covid_betten + "%") +
                     "<hr>" +
                     createHtmlToDisplay("Betten frei", props.intensivbetten.betten_frei) +
                     createHtmlToDisplay("Betten belegt", props.intensivbetten.betten_belegt) +
