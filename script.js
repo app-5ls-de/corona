@@ -206,8 +206,8 @@ info.update = function (props) {
             this._div.innerHTML = '<h4>' + props.cases.name + '</h4>' +
                 createHtmlToDisplay("Inzidenz", props.cases.weekIncidence.toFixed(0)) +
                 createHtmlToDisplay("Fälle/100k", props.cases.casesPer100k.toFixed(0)) +
-                createHtmlToDisplay("Betroffenenrate", props.cases.casesPerPopulation.toFixed(3)) +
-                createHtmlToDisplay("Sterberate", props.cases.deathRate.toFixed(3)) +
+                createHtmlToDisplay("Betroffenenrate", props.cases.casesPerPopulation.toFixed(1) + %) +
+                createHtmlToDisplay("Sterberate", props.cases.deathRate.toFixed(1) + %) +
                 "<hr>" +
                 createHtmlToDisplay("Fälle", props.cases.count) +
                 createHtmlToDisplay("Tode", props.cases.deaths) +
