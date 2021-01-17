@@ -83,14 +83,13 @@ var locked = false
 var Layer
 function draw() {
     document.getElementById("spinner").style.display = "none"
-    legend.update()
-
-
+    
     selected_series = Object.keys(data.series)[0]
     if (Object.keys(data.series).includes("week_incidence")) {
         selected_series = "week_incidence"
     }
-
+    
+    legend.update()
 
     switcher.onAdd = function (map) {
         let options = []
