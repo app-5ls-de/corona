@@ -235,6 +235,7 @@ info.update = function (props) {
         ])
     } else {
         this._div.style.display = "none"
+        redom.setChildren(this._div, []);
     }
 }
 
