@@ -168,6 +168,11 @@ function draw() {
     map.fitBounds(Layer.getBounds().pad(0.02))
 }
 
+map._controlContainer.onclick = (e) => {
+    locked = false
+    Layer.resetStyle()
+    info.update()
+}
 
 
 var info = L.control()
