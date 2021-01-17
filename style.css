@@ -58,6 +58,7 @@ html, body, #map {
 
 .info.leaflet-control {
     font-size: 1rem;
+    pointer-events:none;
 }
 
 .switcher>button {

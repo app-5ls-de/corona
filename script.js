@@ -36,7 +36,7 @@ map.setView([51.33061163769853, 10.458984375000002], 6)
 
 var URL_host = "https://api.corona.app.5ls.de"
 
-var URL_data = URL_host + "/districts" 
+var URL_data = URL_host + "/districts"
 var URL_geojson = URL_host + "/districts.geojson"
 var URL_country = URL_host + "/country"
 
@@ -118,19 +118,19 @@ var locked = false
 var Layer
 function draw() {
     document.getElementById("spinner").style.display = "none"
-    
+
     selected_series = Object.keys(data.series)[0]
     if (Object.keys(data.series).includes("week_incidence")) {
         selected_series = "week_incidence"
     }
-    
+
     legend.update()
 
     switcher.onAdd = function (map) {
         let options = []
         for (const serie in data.series) {
             if (Object.hasOwnProperty.call(data.series, serie)) {
-                options.push(redom.el("option", serie, { value: serie , selected: serie == "week_incidence"}))
+                options.push(redom.el("option", serie, { value: serie, selected: serie == "week_incidence" }))
             }
         }
 
@@ -203,12 +203,13 @@ function draw() {
     map.fitBounds(Layer.getBounds().pad(0.02))
 }
 
-map._controlContainer.onclick = (e) => {
+
+map._container.addEventListener("click", (e) => {
+    if (map._container != e.target) return // clicked on child
     locked = false
     Layer.resetStyle()
     info.update()
-}
-
+})
 
 var info = L.control()
 
