@@ -15,7 +15,7 @@ f(URL_geojson, (response) => {
     geojson = response
     if (data) draw()
 })
-var switcher
+
 f(URL_data, (response) => {
     data = {
         series: response.series,
@@ -25,34 +25,6 @@ f(URL_data, (response) => {
         data.districts[element.rs] = element
     })
     if (geojson) draw()
-
-    selected_series = Object.keys(data.series)[0]
-    if (Object.keys(data.series).includes("week_incidence")) {
-        selected_series = "week_incidence"
-    }
-
-    switcher = L.control({ position: 'topleft' })
-
-    switcher.onAdd = function (map) {
-        let options = []
-        for (const serie in data.series) {
-            if (Object.hasOwnProperty.call(data.series, serie)) {
-                options.push(redom.el("option", serie, { value: serie , selected: serie == "week_incidence"}))
-            }
-        }
-
-        this._div = redom.el("div.info.switcher", this.selector = redom.el("select", options))
-
-        this._div.addEventListener("change", (e) => {
-            selected_series = this.selector.value
-            Layer.resetStyle()
-            legend.update()
-        })
-
-        return this._div
-    }
-
-    switcher.addTo(map)
 })
 
 
@@ -105,12 +77,43 @@ function style(feature) {
 }
 
 
+var switcher = L.control({ position: 'topleft' })
 
 var locked = false
 var Layer
 function draw() {
     document.getElementById("spinner").style.display = "none"
     legend.update()
+
+
+    selected_series = Object.keys(data.series)[0]
+    if (Object.keys(data.series).includes("week_incidence")) {
+        selected_series = "week_incidence"
+    }
+
+
+    switcher.onAdd = function (map) {
+        let options = []
+        for (const serie in data.series) {
+            if (Object.hasOwnProperty.call(data.series, serie)) {
+                options.push(redom.el("option", serie, { value: serie , selected: serie == "week_incidence"}))
+            }
+        }
+
+        this._div = redom.el("div.info.switcher", this.selector = redom.el("select", options))
+
+        this._div.addEventListener("change", (e) => {
+            selected_series = this.selector.value
+            Layer.resetStyle()
+            legend.update()
+        })
+
+        return this._div
+    }
+
+    switcher.addTo(map)
+
+
 
     function onEachFeature(feature, layer) {
         feature.data = data.districts[feature.properties.rs]
