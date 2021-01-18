@@ -116,6 +116,7 @@ html, body, #map {
 
 .label {
     margin-right: 0.5rem;
+    font-size: small;
 }
 
 .value {
