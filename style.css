@@ -79,6 +79,11 @@ html, body, #map {
     margin-top: auto;
 }
 
+
+.switcher>select {
+    font-size: smaller;
+}
+
 .switcher>button {
     display: block;
     text-decoration: none;
