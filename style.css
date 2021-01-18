@@ -82,6 +82,8 @@ html, body, #map {
 
 .switcher>select {
     font-size: smaller;
+    width: 100%;
+    max-width: 10rem;
 }
 
 .switcher>button {
