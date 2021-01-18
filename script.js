@@ -138,6 +138,8 @@ function draw() {
 
         this._div.addEventListener("change", (e) => {
             selected_series = this.selector.value
+            
+            plausible('switcher', {props: {selected: selected_series}})
             Layer.resetStyle()
             legend.update()
         })
