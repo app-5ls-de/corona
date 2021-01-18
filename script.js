@@ -55,13 +55,12 @@ f(URL_geojson, (response) => {
 })
 
 f(URL_data, (response) => {
-    data = {
-        series: response.series,
-        districts: {}
-    }
+    districts = {}
     response.districts.forEach(element => {
-        data.districts[element.rs] = element
+        districts[element.rs] = element
     })
+    data = response
+    data.districts = districts
     if (geojson) draw()
 })
 
@@ -141,8 +140,8 @@ function draw() {
 
         this._div.addEventListener("change", (e) => {
             selected_series = this.selector.value
-            
-            plausible('switcher', {props: {selected: selected_series}})
+
+            plausible('switcher', { props: { selected: selected_series } })
             Layer.resetStyle()
             legend.update()
         })
@@ -237,7 +236,7 @@ info.update = function (props) {
         createElToDisplay("Anteil freier Betten", props.proportion_beds_available + "%"),
         createElToDisplay("Anteil Covid Betten", props.proportion_beds_covid + "%"),
         createElToDisplay("Anteil Covid beatmet", props.proportion_beds_covid_ventilated + "%"),
-        redom.el("div.date", "props.lastUpdate")
+        redom.el("div.date", data.last_update)
         ])
     } else {
         this._div.style.display = "none"
