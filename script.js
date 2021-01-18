@@ -68,7 +68,7 @@ f(URL_data, (response) => {
 var country_info = L.control({ position: 'bottomright' })
 
 country_info.onAdd = function (map) {
-    this._div = redom.el("div.info")
+    this._div = redom.el("div.info.country_info")
     return this._div
 }
 
@@ -218,7 +218,7 @@ map._container.addEventListener("click", (e) => {
 var info = L.control()
 
 info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info minwidth')
+    this._div = redom.el("div.info.minwidth.infos")
     this.update()
     return this._div
 }
