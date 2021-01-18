@@ -27,8 +27,11 @@ function mount(parent, childs) {
 }
 
 var map = L.map('map', {
-    zoomSnap: 0
+    zoomSnap: 0,
+    zoomControl: false
 })
+
+new L.Control.Zoom({ position: 'bottomleft' }).addTo(map);
 
 map.setView([51.33061163769853, 10.458984375000002], 6)
 

@@ -63,7 +63,16 @@ html, body, #map {
 .leaflet-control-container>.leaflet-top.leaflet-right,
 .leaflet-control-container>.leaflet-bottom.leaflet-right, 
 .leaflet-control-container>.leaflet-bottom.leaflet-left {
-    pointer-events:none;
+    pointer-events: none;
+}
+
+.leaflet-control-container>.leaflet-bottom.leaflet-left {
+    display: flex;
+}
+
+.leaflet-control.leaflet-control-zoom {
+    height: min-content;
+    margin-top: auto;
 }
 
 .switcher>button {
