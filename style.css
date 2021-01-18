@@ -62,7 +62,8 @@ html, body, #map {
 
 .leaflet-control-container>.leaflet-top.leaflet-right,
 .leaflet-control-container>.leaflet-bottom.leaflet-right, 
-.leaflet-control-container>.leaflet-bottom.leaflet-left {
+.leaflet-control-container>.leaflet-bottom.leaflet-left,
+.infos.leaflet-control {
     pointer-events: none;
 }
 
