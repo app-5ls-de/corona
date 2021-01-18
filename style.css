@@ -63,7 +63,9 @@ html, body, #map {
 .leaflet-control-container>.leaflet-top.leaflet-right,
 .leaflet-control-container>.leaflet-bottom.leaflet-right, 
 .leaflet-control-container>.leaflet-bottom.leaflet-left,
-.infos.leaflet-control {
+.infos.leaflet-control,
+.country_info.leaflet-control,
+.legend.leaflet-control {
     pointer-events: none;
 }
 
