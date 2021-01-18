@@ -58,6 +58,11 @@ html, body, #map {
 
 .info.leaflet-control {
     font-size: 1rem;
+}
+
+.leaflet-control-container>.leaflet-top.leaflet-right,
+.leaflet-control-container>.leaflet-bottom.leaflet-right, 
+.leaflet-control-container>.leaflet-bottom.leaflet-left {
     pointer-events:none;
 }
 
