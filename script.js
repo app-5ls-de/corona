@@ -194,7 +194,7 @@ function draw() {
         locked = true
         
         var layer = e.target
-        plausible('district', { props: { name: layer.feature.data.name } })
+        plausible('lockdistrict', { props: { name: layer.feature.data.name } })
     }
 
     Layer = L.geoJSON(geojson, {
