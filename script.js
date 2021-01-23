@@ -178,6 +178,7 @@ function draw() {
         }
 
         info.update(layer.feature.data)
+        plausible('district', { props: { name: layer.feature.data.name } })
     }
 
     function resetHighlight(e) {
