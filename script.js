@@ -141,7 +141,6 @@ function draw() {
         this._div.addEventListener("change", (e) => {
             selected_series = this.selector.value
 
-            plausible('switcher', { props: { selected: selected_series } })
             Layer.resetStyle()
             legend.update()
         })
@@ -194,7 +193,6 @@ function draw() {
         locked = true
         
         var layer = e.target
-        plausible('lockdistrict', { props: { name: layer.feature.data.name } })
     }
 
     Layer = L.geoJSON(geojson, {
