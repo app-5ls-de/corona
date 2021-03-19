@@ -26,6 +26,64 @@ function mount(parent, childs) {
     }
 }
 
+let incidentRanges = [
+    {
+        min: 0,
+        max: 1,
+        color: "#2D81B8",
+    },
+    {
+        min: 1,
+        max: 5,
+        color: "#7FD38D",
+    },
+    {
+        min: 15,
+        max: 25,
+        color: "#FEFFB1",
+    },
+    {
+        min: 25,
+        max: 35,
+        color: "#FECA81",
+    },
+    {
+        min: 35,
+        max: 50,
+        color: "#F08A4B",
+    },
+    {
+        min: 50,
+        max: 100,
+        color: "#EB1A1D",
+    },
+    {
+        min: 100,
+        max: 200,
+        color: "#AB1316",
+    },
+    {
+        min: 200,
+        max: 350,
+        color: "#B374DD",
+    },
+    {
+        min: 350,
+        max: 500,
+        color: "#5B189B",
+    },
+    {
+        min: 500,
+        max: 1000,
+        color: "#543D35",
+    },
+    {
+        min: 1000,
+        max: null,
+        color: "#020003",
+    },
+];
+
 var map = L.map("map", {
     zoomSnap: 0,
     zoomControl: false,
@@ -36,7 +94,7 @@ new L.Control.Zoom({ position: "bottomleft" }).addTo(map);
 map.setView([51.33061163769853, 10.458984375000002], 6);
 
 var URL_host =
-    "https://api-corona-app-5ls-de-6hf01panu-patrickhaussmann.vercel.app";
+    "https://api-corona-app-5ls-de-git-add-v2-patrickhaussmann.vercel.app";
 
 var URL_data = URL_host + "/districts";
 var URL_geojson = URL_host + "/districts.geojson";
@@ -52,12 +110,7 @@ f(URL_geojson, (response) => {
 });
 
 f(URL_data, (response) => {
-    districts = {};
-    response.districts.forEach((element) => {
-        districts[element.rs] = element;
-    });
     data = response;
-    data.districts = districts;
     if (geojson) draw();
 });
 
@@ -73,39 +126,48 @@ country_info.addTo(map);
 f(URL_country, (response) => {
     mount(country_info._div, [
         redom.el("h4", "Bundesweit"),
-        createElToDisplay(
-            "diff. Vortag",
-            "+" + response.difference_to_previous_date
+        createElToDisplay("Fälle", response.cases, response.delta.cases),
+        createElToDisplay("Todesfälle", response.deaths, response.delta.deaths),
+        createElToDisplay("R-Wert", response.r.value),
+        createElToDisplay("Inzidenz", response.weekIncidence.toFixed(0)),
+        redom.el(
+            "div.date",
+            new Date(response.lastUpdate).toLocaleDateString() + " (8:30Uhr)",
+            {
+                title: "Daten von 0Uhr, veröffentlicht um 8:30Uhr",
+            }
         ),
-        createElToDisplay("Inzidenz", response.week_incidence.toFixed(0)),
-        redom.el("div.date", response.last_update + " (8:30Uhr)", {
-            title: "Daten von 0Uhr, veröffentlicht um 8:30Uhr",
-        }),
     ]);
 });
 
-function createElToDisplay(label, value) {
+function createElToDisplay(label, value, delta) {
+    let delta_el;
+    if (delta != undefined) {
+        let delta_text = "";
+        if (delta >= 0) delta_text = " +" + delta;
+        if (delta < 0) delta_text = " -" + delta;
+        delta_el = redom.el("div.delta", delta_text, {
+            title: "Differenz zum Vortag",
+        });
+    }
+
     return redom.el(
         "div",
         redom.el("div.label", label + ": "),
-        redom.el("div.value", value),
+        redom.el("div.value", value, delta_el),
         redom.el("br")
     );
 }
 
 function style(feature) {
-    //color = "#a0a0a0"
+    color = "#a0a0a0";
     if (!feature.data) return;
 
-    series = data.series[selected_series];
-    colors = series.color;
+    value = feature.data["weekIncidence"];
 
-    value = feature.data[selected_series];
-
-    colors.forEach((element) => {
-        if (element.range_start <= value) {
-            if (!element.range_end || value < element.range_end)
-                color = element.hex;
+    incidentRanges.forEach((element) => {
+        if (element.min <= value) {
+            if (!element.max || value < element.max) color = element.color;
         }
     });
 
@@ -120,52 +182,15 @@ function style(feature) {
     return options;
 }
 
-var switcher = L.control({ position: "topleft" });
-
 var locked = false;
 var Layer;
 function draw() {
     document.getElementById("spinner").style.display = "none";
 
-    selected_series = Object.keys(data.series)[0];
-    if (Object.keys(data.series).includes("week_incidence")) {
-        selected_series = "week_incidence";
-    }
-
-    legend.update();
-
-    switcher.onAdd = function (map) {
-        let options = [];
-        for (const serie in data.series) {
-            if (Object.hasOwnProperty.call(data.series, serie)) {
-                options.push(
-                    redom.el("option", serie, {
-                        value: serie,
-                        selected: serie == "week_incidence",
-                    })
-                );
-            }
-        }
-
-        this._div = redom.el(
-            "div.info.switcher",
-            (this.selector = redom.el("select", options))
-        );
-
-        this._div.addEventListener("change", (e) => {
-            selected_series = this.selector.value;
-
-            Layer.resetStyle();
-            legend.update();
-        });
-
-        return this._div;
-    };
-
-    switcher.addTo(map);
+    selected_series = "weekIncidence";
 
     function onEachFeature(feature, layer) {
-        feature.data = data.districts[feature.properties.rs];
+        feature.data = data.data[feature.properties.rs];
 
         layer.on({
             mouseover: highlightFeature,
@@ -199,6 +224,8 @@ function draw() {
     }
 
     function lockHighlight(e) {
+        console.log(e.target.feature.data);
+
         locked = false;
         Layer.resetStyle();
         highlightFeature(e);
@@ -242,37 +269,46 @@ info.update = function (props) {
         redom.setChildren(this._div, []);
         mount(this._div, [
             redom.el("h4", props.name),
-            createElToDisplay("Fälle", props.cases),
-            createElToDisplay("Tode", props.deaths),
+            createElToDisplay("Fälle", props.cases, props.delta.cases),
+            createElToDisplay("Todesfälle", props.deaths, props.delta.deaths),
             createElToDisplay("Bevölkerung", props.population),
-            createElToDisplay("Inzidenz", props.week_incidence.toFixed(0)),
+            createElToDisplay("Inzidenz", props.weekIncidence.toFixed(0)),
             createElToDisplay(
                 "Betroffenenrate",
-                props.cases_rate.toFixed(1) + "%"
+                (props.casesRate * 100).toFixed(1) + "%"
             ),
-            createElToDisplay("Sterberate", props.death_rate.toFixed(1) + "%"),
+            createElToDisplay(
+                "Sterberate",
+                (props.deathRate * 100).toFixed(1) + "%"
+            ),
             redom.el("hr"),
-            createElToDisplay("Betten frei", props.beds_available),
-            createElToDisplay("Betten belegt", props.beds_occupied),
-            createElToDisplay("Betten gesamt", props.beds_total),
-            createElToDisplay("Fälle Covid aktuell", props.beds_covid),
+            createElToDisplay("Betten frei", props.bedsAvailable),
+            createElToDisplay("Betten belegt", props.bedsOccupied),
+            createElToDisplay("Betten gesamt", props.bedsTotal),
+            createElToDisplay("Fälle Covid aktuell", props.bedsCovid),
             createElToDisplay(
                 "Fälle Covid aktuell beatmet",
-                props.beds_covid_ventilated
+                props.bedsCovidVentilated
             ),
             createElToDisplay(
                 "Anteil freier Betten",
-                props.proportion_beds_available + "%"
+                (props.proportionBedsAvailable * 100).toFixed(1) + "%"
             ),
             createElToDisplay(
                 "Anteil Covid Betten",
-                props.proportion_beds_covid + "%"
+                (props.proportionBedsCovid * 100).toFixed(1) + "%"
             ),
             createElToDisplay(
                 "Anteil Covid beatmet",
-                props.proportion_beds_covid_ventilated + "%"
+                (props.proportionBedsCovidVentilated * 100).toFixed(1) + "%"
             ),
-            redom.el("div.date", data.last_update),
+            redom.el(
+                "div.date",
+                new Date(data.lastUpdate).toLocaleDateString() +
+                    " (" +
+                    new Date(data.lastUpdate).toLocaleTimeString().slice(0, 4) +
+                    "Uhr)"
+            ),
         ]);
     } else {
         this._div.style.display = "none";
@@ -292,21 +328,17 @@ legend.onAdd = function (map) {
 };
 
 legend.update = function () {
-    if (!data) return;
-    series = data.series[selected_series];
-    colors = series.color;
-
     redom.setChildren(this._div, []);
-    colors.forEach((element) => {
-        if (element.range_start != undefined) {
-            if (element.range_end) {
-                text = "<" + element.range_end;
+    incidentRanges.forEach((element) => {
+        if (element.min != undefined) {
+            if (element.max) {
+                text = "<" + element.max;
             } else {
-                text = ">" + element.range_start;
+                text = ">" + element.min;
             }
             mount(this._div, [
                 redom.el("div.colorSquare", {
-                    style: "background-color:" + element.hex + ";",
+                    style: "background-color:" + element.color + ";",
                 }),
                 redom.el("span", text),
                 redom.el("br"),
