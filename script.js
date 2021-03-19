@@ -37,7 +37,7 @@ map.setView([51.33061163769853, 10.458984375000002], 6)
 
 
 
-var URL_host = "https://api.corona.app.5ls.de"
+var URL_host = "https://api-corona-app-5ls-de-6hf01panu-patrickhaussmann.vercel.app"
 
 var URL_data = URL_host + "/districts"
 var URL_geojson = URL_host + "/districts.geojson"
