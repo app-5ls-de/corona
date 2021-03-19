@@ -128,7 +128,7 @@ f(URL_country, (response) => {
         redom.el("h4", "Bundesweit"),
         createElToDisplay("Fälle", response.cases, response.delta.cases),
         createElToDisplay("Todesfälle", response.deaths, response.delta.deaths),
-        createElToDisplay("R-Wert", response.r.value),
+        createElToDisplay("R-Wert", response.rValue),
         createElToDisplay("Inzidenz", response.weekIncidence.toFixed(0)),
         redom.el(
             "div.date",
