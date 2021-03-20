@@ -70,8 +70,8 @@ f(URL_country, (response) => {
         createElToDisplay("Fälle", response.cases, response.delta.cases),
         createElToDisplay(
             "Impfungen",
-            response.vaccinations.vaccinated,
-            response.vaccinations.delta
+            response.vaccinated,
+            response.delta.vaccinated
         ),
         createElToDisplay("Todesfälle", response.deaths, response.delta.deaths),
         createElToDisplay("R-Wert", response.rValue),
@@ -138,7 +138,7 @@ function draw() {
     selected_series = "weekIncidence";
 
     function onEachFeature(feature, layer) {
-        feature.data = data.data[feature.properties.rs];
+        feature.data = data.districts[feature.properties.rs];
 
         layer.on({
             mouseover: highlightFeature,
