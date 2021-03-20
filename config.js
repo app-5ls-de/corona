@@ -173,7 +173,7 @@ var config = {
             ],
         },
         secondVaccinationQuote: {
-            name: "Impffortschritt (nach Bundesland)",
+            name: "Impffortschritt",
             scope: "states",
             unit: "%",
             ranges: [
