@@ -38,6 +38,11 @@ let incidentRanges = [
         color: "#7FD38D",
     },
     {
+        min: 5,
+        max: 15,
+        color: "#bfe99f",
+    },
+    {
         min: 15,
         max: 25,
         color: "#FEFFB1",
