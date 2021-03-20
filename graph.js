@@ -48,8 +48,10 @@ function plot(id, title, yLabel, categories, series) {
             scrollablePlotArea: {
                 minWidth: 700,
             },
-        },
-        chart: {
+            spacingBottom: 10,
+            spacingTop: 10,
+            spacingLeft: 10,
+            spacingRight: 10,
             zoomType: "x",
         },
         title: {
@@ -81,28 +83,38 @@ function plot(id, title, yLabel, categories, series) {
 
 let div_container = document.getElementById("container");
 
-let div_timeline = document.createElement("div");
-div_timeline.id = "timeline";
-div_container.appendChild(div_timeline);
-f(
-    "https://cors-anywhere.herokuapp.com/" +
-        "https://api-corona-app-5ls-de-git-add-v2-patrickhaussmann.vercel.app/history",
-    (response) => {
-        let labels = [];
-        let series = [];
+let div_cases = document.createElement("div");
+div_cases.id = "cases";
+div_container.appendChild(div_cases);
 
-        series = [
+let div_deaths = document.createElement("div");
+div_deaths.id = "deaths";
+div_container.appendChild(div_deaths);
+f(
+    "https://api-corona-app-5ls-de-git-add-v2-patrickhaussmann.vercel.app/history",
+    (response) => {
+        let labels_cases = [];
+        let series_cases = [
             {
                 type: "scatter",
-                name: "Fälle",
+                name: "Datenpunkte",
                 data: [],
-                visible: false,
+                color: "#cccccc",
+                marker: {
+                    radius: 3,
+                },
             },
+        ];
+        let labels_deaths = [];
+        let series_deaths = [
             {
                 type: "scatter",
-                name: "Todesfälle",
+                name: "Datenpunkte",
                 data: [],
-                visible: false,
+                color: "#cccccc",
+                marker: {
+                    radius: 3,
+                },
             },
         ];
 
@@ -110,26 +122,26 @@ f(
             let dateSplit = element.date.split("-");
             let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
 
-            labels.push(label);
-            series[0].data.push(element.cases);
-            series[1].data.push(element.deaths);
+            labels_cases.push(label);
+            labels_deaths.push(label);
+            series_deaths[0].data.push(element.deaths);
+            series_cases[0].data.push(element.cases);
         });
 
-        series.push({
+        series_cases.push({
             type: "line",
-            name: "Fälle sma",
-            data: sma(series[0].data, 7),
-            visible: true,
+            name: "7-Tages Durchschnitt",
+            data: sma(series_cases[0].data, 7),
         });
-
-        series.push({
+        series_deaths.push({
             type: "line",
-            name: "Todesfälle sma",
-            data: sma(series[1].data, 7),
-            visible: true,
+            name: "7-Tages Durchschnitt",
+            data: sma(series_deaths[0].data, 7),
         });
 
-        plot("timeline", "Fälle und Todesfälle", "Fälle", labels, series);
+        plot("cases", "Fälle", "Fälle", labels_cases, series_cases);
+
+        plot("deaths", "Todesfälle", "Fälle", labels_deaths, series_deaths);
     }
 );
 
@@ -139,9 +151,7 @@ div_container.appendChild(div_vaccinations);
 
 f("https://api.corona-zahlen.org/vaccinations/history", (response) => {
     let labels = [];
-    let series = [];
-
-    series = [
+    let series = [
         {
             type: "line",
             name: "Erste Impfung",
@@ -166,4 +176,32 @@ f("https://api.corona-zahlen.org/vaccinations/history", (response) => {
     });
 
     plot("vaccinations", "Impfungen", "Anzahl", labels, series);
+});
+
+let div_weekIncidence = document.createElement("div");
+div_weekIncidence.id = "weekIncidence";
+div_container.appendChild(div_weekIncidence);
+
+f("https://api.corona-zahlen.org/germany/history/incidence", (response) => {
+    let labels = [];
+    let series = [
+        {
+            type: "line",
+            name: "Inzidenzwert",
+            showInLegend: false,
+            data: [],
+            visible: true,
+        },
+    ];
+
+    response.data.forEach((element) => {
+        let dateSplit = element.date.split("-");
+        let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
+
+        labels.push(label);
+        series[0].data.push(element.weekIncidence);
+    });
+
+    series[0].data = sma(series[0].data, 1);
+    plot("weekIncidence", "Inzidenzwert", "Inzidenz", labels, series);
 });
