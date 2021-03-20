@@ -60,8 +60,8 @@ function plot(id, title, yLabel, categories, series) {
         subtitle: {
             text:
                 document.ontouchstart === undefined
-                    ? "Click and drag in the plot area to zoom in"
-                    : "Pinch the chart to zoom in",
+                    ? "Klicken und ziehen Sie im Plotbereich, um zu vergrößern"
+                    : "Ziehen Sie das Diagramm zusammen, um zu vergrößern",
         },
         tooltip: {
             shared: true,
