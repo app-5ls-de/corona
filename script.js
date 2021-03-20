@@ -340,3 +340,16 @@ legend.update = function () {
 };
 
 legend.addTo(map);
+
+var switcher = L.control({ position: "topleft" });
+
+switcher.onAdd = function (map) {
+    this._div = redom.el(
+        "div.info.switcher",
+        (this._a_graph = redom.el("a", "Graph", { href: "/graph" }))
+    );
+
+    return this._div;
+};
+
+switcher.addTo(map);
