@@ -86,21 +86,8 @@ html, body, #map {
     max-width: 10rem;
 }
 
-.switcher>button {
-    display: block;
-    text-decoration: none;
+.switcher>.buttons {
     text-align: center;
-    border-radius: 5px;
-    color: black;
-    margin: 4px 0;
-    width: 100%;
-    background-color: #ffffff;
-}
-
-.switcher.weekIncidence>button.weekIncidence,
-.switcher.casesPer100k>button.casesPer100k,
-.switcher.intensivbetten>button.intensivbetten {
-    background-color: #ff980091;
 }
 
 .legend>.colorSquare {
