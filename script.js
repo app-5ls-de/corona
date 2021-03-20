@@ -68,6 +68,11 @@ f(URL_country, (response) => {
     mount(country_info._div, [
         redom.el("h4", "Bundesweit"),
         createElToDisplay("Fälle", response.cases, response.delta.cases),
+        createElToDisplay(
+            "Impfungen",
+            response.vaccinations.vaccinated,
+            response.vaccinations.delta
+        ),
         createElToDisplay("Todesfälle", response.deaths, response.delta.deaths),
         createElToDisplay("R-Wert", response.rValue),
         createElToDisplay("Inzidenz", response.weekIncidence.toFixed(0)),
