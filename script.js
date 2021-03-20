@@ -64,7 +64,7 @@ switcher.onAdd = function (map) {
         selected = this.value;
         locked = false;
         Layer.resetStyle();
-        info.update();
+        legend.update();
     }
 
     for (const key in config) {
