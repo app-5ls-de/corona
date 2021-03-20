@@ -1,16 +1,29 @@
-function f(url, callback) {
-    fetch(url)
+function f(urls, callback) {
+    if (Array.isArray(urls)) {
+        var array = urls;
+    } else {
+        var array = [urls];
+    }
+    Promise.all(
+        array.map((url) =>
+            fetch(url)
+                .then((response) => {
+                    if (response.ok) {
+                        return Promise.resolve(response);
+                    } else {
+                        return Promise.reject(new Error(response.statusText));
+                    }
+                })
+                .then((response) => response.json())
+        )
+    )
         .then((response) => {
-            if (response.ok) {
-                return Promise.resolve(response);
+            if (Array.isArray(urls)) {
+                callback(response);
             } else {
-                return Promise.reject(new Error(response.statusText));
+                callback(response[0]);
             }
         })
-        .then((response) => {
-            return response.json();
-        })
-        .then(callback)
         .catch((error) => {
             console.error("Request failed", error, url);
         });
