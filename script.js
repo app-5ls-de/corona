@@ -279,8 +279,6 @@ function draw(geojson) {
         Layer.resetStyle();
         highlightFeature(e);
         locked = true;
-
-        var layer = e.target;
     }
 
     Layer = L.geoJSON(geojson, {
