@@ -286,26 +286,13 @@ info.update = function (props) {
                 "Sterberate",
                 (props.deathRate * 100).toFixed(1) + "%"
             ),
-            redom.el("hr"),
-            createElToDisplay("Betten frei", props.bedsAvailable),
-            createElToDisplay("Betten belegt", props.bedsOccupied),
-            createElToDisplay("Betten gesamt", props.bedsTotal),
-            createElToDisplay("Fälle Covid aktuell", props.bedsCovid),
             createElToDisplay(
-                "Fälle Covid aktuell beatmet",
-                props.bedsCovidVentilated
+                "Freie Intensivbetten",
+                (props.proportionBedsAvailable * 100).toFixed(0) + "%"
             ),
             createElToDisplay(
-                "Anteil freier Betten",
-                (props.proportionBedsAvailable * 100).toFixed(1) + "%"
-            ),
-            createElToDisplay(
-                "Anteil Covid Betten",
-                (props.proportionBedsCovid * 100).toFixed(1) + "%"
-            ),
-            createElToDisplay(
-                "Anteil Covid beatmet",
-                (props.proportionBedsCovidVentilated * 100).toFixed(1) + "%"
+                "Intensivbetten mit Covid",
+                (props.proportionBedsCovid * 100).toFixed(0) + "%"
             ),
             redom.el(
                 "div.date",
