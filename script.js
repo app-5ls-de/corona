@@ -112,14 +112,9 @@ switcher.onAdd = function (map) {
 
 switcher.addTo(map);
 
-f(URL_geojson, (response) => {
-    geojson = response;
-    if (data) draw();
-});
-
-f(URL_data, (response) => {
-    data = response;
-    if (geojson) draw();
+f([URL_geojson, URL_data], (response) => {
+    [geojson, data] = response;
+    draw();
 });
 
 var country_info = L.control({ position: "bottomright" });
