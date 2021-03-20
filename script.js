@@ -25,7 +25,7 @@ function f(urls, callback) {
             }
         })
         .catch((error) => {
-            console.error("Request failed", error, url);
+            console.error("Request failed", error, urls);
         });
 }
 
