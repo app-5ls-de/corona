@@ -280,11 +280,11 @@ info.update = function (props) {
             createElToDisplay("Bevölkerung", props.population),
             createElToDisplay("Inzidenz", props.weekIncidence.toFixed(0)),
             createElToDisplay(
-                "Betroffenenrate",
+                "Infektionsrate",
                 (props.casesRate * 100).toFixed(1) + "%"
             ),
             createElToDisplay(
-                "Sterberate",
+                "Letalitätsrate",
                 (props.deathRate * 100).toFixed(1) + "%"
             ),
             createElToDisplay(

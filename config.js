@@ -66,7 +66,7 @@ var config = {
         ],
     },
     deathRate: {
-        name: "Sterberate",
+        name: "Letalitätsrate",
         scope: "districts",
         unit: "%",
         ranges: [
@@ -118,7 +118,7 @@ var config = {
         ],
     },
     casesRate: {
-        name: "Betroffenenrate",
+        name: "Infektionsrate",
         scope: "districts",
         unit: "%",
         ranges: [
