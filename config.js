@@ -1,7 +1,7 @@
 var config = {
     weekIncidence: {
         name: "Inzidenz",
-        geojson: "districts",
+        scope: "districts",
         ranges: [
             {
                 min: 0,
@@ -67,23 +67,105 @@ var config = {
     },
     deathRate: {
         name: "Sterberate",
-        geojson: "districts",
+        scope: "districts",
+        unit: "%",
         ranges: [
             {
                 min: 0,
+                max: 0.005,
+                color: "#bfe99f",
+            },
+            {
+                min: 0.005,
+                max: 0.01,
+                color: "#FEFFB1",
+            },
+            {
+                min: 0.01,
+                max: 0.02,
+                color: "#FECA81",
+            },
+            {
+                min: 0.02,
+                max: 0.03,
+                color: "#F08A4B",
+            },
+            {
+                min: 0.03,
+                max: 0.04,
+                color: "#EB1A1D",
+            },
+            {
+                min: 0.04,
+                max: 0.05,
+                color: "#AB1316",
+            },
+            {
+                min: 0.05,
+                max: 0.06,
+                color: "#B374DD",
+            },
+            {
+                min: 0.06,
+                max: 0.07,
+                color: "#5B189B",
+            },
+            {
+                min: 0.07,
                 max: null,
-                color: "pink",
+                color: "#020003",
             },
         ],
     },
-    deathRate: {
-        name: "Sterberate",
-        geojson: "districts",
+    casesRate: {
+        name: "Betroffenenrate",
+        scope: "districts",
+        unit: "%",
         ranges: [
             {
                 min: 0,
+                max: 0.005,
+                color: "#bfe99f",
+            },
+            {
+                min: 0.005,
+                max: 0.01,
+                color: "#FEFFB1",
+            },
+            {
+                min: 0.01,
+                max: 0.02,
+                color: "#FECA81",
+            },
+            {
+                min: 0.02,
+                max: 0.03,
+                color: "#F08A4B",
+            },
+            {
+                min: 0.03,
+                max: 0.04,
+                color: "#EB1A1D",
+            },
+            {
+                min: 0.04,
+                max: 0.05,
+                color: "#AB1316",
+            },
+            {
+                min: 0.05,
+                max: 0.06,
+                color: "#B374DD",
+            },
+            {
+                min: 0.06,
+                max: 0.07,
+                color: "#5B189B",
+            },
+            {
+                min: 0.07,
                 max: null,
-                color: "pink",
+                color: "#020003",
             },
         ],
     },

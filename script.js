@@ -43,7 +43,59 @@ var URL_country = URL_host + "/country";
 
 var data;
 var geojson;
-var selected_series;
+var selected = "weekIncidence";
+
+var switcher = L.control({ position: "topleft" });
+
+switcher.onAdd = function (map) {
+    this._div = redom.el(
+        "div.info.switcher",
+        redom.el(
+            "div.buttons",
+            redom.el("a", redom.el("button", "Graph"), {
+                href: "/graph",
+            })
+        ),
+        redom.el("hr"),
+        (this._selection_container = redom.el("div.selection-container"))
+    );
+
+    function handleClick(e) {
+        selected = this.value;
+        Layer.resetStyle();
+        legend.update();
+    }
+
+    for (const key in config) {
+        if (Object.hasOwnProperty.call(config, key)) {
+            const element = config[key];
+            redom.mount(
+                this._selection_container,
+                redom.el(
+                    "div.selection",
+                    redom.el(
+                        "input",
+                        (el) => el.addEventListener("click", handleClick),
+                        {
+                            type: "radio",
+                            name: "selection",
+                            id: "selection-" + key,
+                            value: key,
+                            checked: key == selected,
+                        }
+                    ),
+                    redom.el("label", config[key].name, {
+                        for: "selection-" + key,
+                    })
+                )
+            );
+        }
+    }
+
+    return this._div;
+};
+
+switcher.addTo(map);
 
 f(URL_geojson, (response) => {
     geojson = response;
@@ -109,11 +161,9 @@ function style(feature) {
     color = "#a0a0a0";
     if (!feature.data) return;
 
-    let selected_series = "weekIncidence";
+    value = feature.data[selected];
 
-    value = feature.data[selected_series];
-
-    config[selected_series].ranges.forEach((element) => {
+    config[selected].ranges.forEach((element) => {
         if (element.min <= value) {
             if (!element.max || value < element.max) color = element.color;
         }
@@ -134,8 +184,6 @@ var locked = false;
 var Layer;
 function draw() {
     document.getElementById("spinner").style.display = "none";
-
-    selected_series = "weekIncidence";
 
     function onEachFeature(feature, layer) {
         feature.data = data.districts[feature.properties.rs];
@@ -264,13 +312,15 @@ legend.onAdd = function (map) {
 
 legend.update = function () {
     redom.setChildren(this._div, []);
-    let selected_series = "weekIncidence";
-    config[selected_series].ranges.forEach((element) => {
+    let format = (a) => a;
+    if (config[selected].unit == "%")
+        format = (a) => (a * 100).toFixed(1) + " %";
+    config[selected].ranges.forEach((element) => {
         if (element.min != undefined) {
             if (element.max) {
-                text = "<" + element.max;
+                text = "<" + format(element.max);
             } else {
-                text = ">" + element.min;
+                text = ">" + format(element.min);
             }
             mount(this._div, [
                 redom.el("div.colorSquare", {
@@ -284,16 +334,3 @@ legend.update = function () {
 };
 
 legend.addTo(map);
-
-var switcher = L.control({ position: "topleft" });
-
-switcher.onAdd = function (map) {
-    this._div = redom.el(
-        "div.info.switcher",
-        (this._a_graph = redom.el("a", "Graph", { href: "/graph" }))
-    );
-
-    return this._div;
-};
-
-switcher.addTo(map);
