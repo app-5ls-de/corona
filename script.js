@@ -26,69 +26,6 @@ function mount(parent, childs) {
     }
 }
 
-let incidentRanges = [
-    {
-        min: 0,
-        max: 1,
-        color: "#2D81B8",
-    },
-    {
-        min: 1,
-        max: 5,
-        color: "#7FD38D",
-    },
-    {
-        min: 5,
-        max: 15,
-        color: "#bfe99f",
-    },
-    {
-        min: 15,
-        max: 25,
-        color: "#FEFFB1",
-    },
-    {
-        min: 25,
-        max: 35,
-        color: "#FECA81",
-    },
-    {
-        min: 35,
-        max: 50,
-        color: "#F08A4B",
-    },
-    {
-        min: 50,
-        max: 100,
-        color: "#EB1A1D",
-    },
-    {
-        min: 100,
-        max: 200,
-        color: "#AB1316",
-    },
-    {
-        min: 200,
-        max: 350,
-        color: "#B374DD",
-    },
-    {
-        min: 350,
-        max: 500,
-        color: "#5B189B",
-    },
-    {
-        min: 500,
-        max: 1000,
-        color: "#543D35",
-    },
-    {
-        min: 1000,
-        max: null,
-        color: "#020003",
-    },
-];
-
 var map = L.map("map", {
     zoomSnap: 0,
     zoomControl: false,
@@ -131,6 +68,11 @@ f(URL_country, (response) => {
     mount(country_info._div, [
         redom.el("h4", "Bundesweit"),
         createElToDisplay("Fälle", response.cases, response.delta.cases),
+        createElToDisplay(
+            "Impfungen",
+            response.vaccinated,
+            response.delta.vaccinated
+        ),
         createElToDisplay("Todesfälle", response.deaths, response.delta.deaths),
         createElToDisplay("R-Wert", response.rValue),
         createElToDisplay("Inzidenz", response.weekIncidence.toFixed(0)),
@@ -167,9 +109,11 @@ function style(feature) {
     color = "#a0a0a0";
     if (!feature.data) return;
 
-    value = feature.data["weekIncidence"];
+    let selected_series = "weekIncidence";
 
-    incidentRanges.forEach((element) => {
+    value = feature.data[selected_series];
+
+    config[selected_series].ranges.forEach((element) => {
         if (element.min <= value) {
             if (!element.max || value < element.max) color = element.color;
         }
@@ -194,7 +138,7 @@ function draw() {
     selected_series = "weekIncidence";
 
     function onEachFeature(feature, layer) {
-        feature.data = data.data[feature.properties.rs];
+        feature.data = data.districts[feature.properties.rs];
 
         layer.on({
             mouseover: highlightFeature,
@@ -320,7 +264,8 @@ legend.onAdd = function (map) {
 
 legend.update = function () {
     redom.setChildren(this._div, []);
-    incidentRanges.forEach((element) => {
+    let selected_series = "weekIncidence";
+    config[selected_series].ranges.forEach((element) => {
         if (element.min != undefined) {
             if (element.max) {
                 text = "<" + element.max;

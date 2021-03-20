@@ -8,6 +8,7 @@ const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/404.html',
+  "/config.js",
   '/script.js',
   '/style.css',
   "/graph",

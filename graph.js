@@ -47,6 +47,7 @@ function plot(id, title, yLabel, categories, series) {
         chart: {
             scrollablePlotArea: {
                 minWidth: 700,
+                scrollPositionX: 1,
             },
             spacingBottom: 10,
             spacingTop: 10,
