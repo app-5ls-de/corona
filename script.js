@@ -238,7 +238,6 @@ function draw(geojson) {
             feature.data = data.districts.data.districts[feature.properties.rs];
         } else if (scope == "states") {
             feature.data = data.states.data.states[feature.properties.name];
-            console.log(feature.properties.name);
         }
 
         layer.on({
