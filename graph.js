@@ -87,63 +87,70 @@ let div_cases = document.createElement("div");
 div_cases.id = "cases";
 div_container.appendChild(div_cases);
 
+f("https://api.corona-zahlen.org/germany/history/cases", (response) => {
+    let labels = [];
+    let series = [
+        {
+            type: "scatter",
+            name: "Datenpunkte",
+            data: [],
+            color: "#cccccc",
+            marker: {
+                radius: 3,
+            },
+        },
+    ];
+
+    response.data.forEach((element) => {
+        let dateSplit = element.date.split("-");
+        let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
+
+        labels.push(label);
+        series[0].data.push(element.cases);
+    });
+
+    series.push({
+        type: "line",
+        name: "7-Tages Durchschnitt",
+        data: sma(series[0].data, 7),
+    });
+    plot("cases", "Fälle", "Fälle", labels, series);
+});
+
 let div_deaths = document.createElement("div");
 div_deaths.id = "deaths";
 div_container.appendChild(div_deaths);
-f(
-    "https://api-corona-app-5ls-de-git-add-v2-patrickhaussmann.vercel.app/history",
-    (response) => {
-        let labels_cases = [];
-        let series_cases = [
-            {
-                type: "scatter",
-                name: "Datenpunkte",
-                data: [],
-                color: "#cccccc",
-                marker: {
-                    radius: 3,
-                },
+
+f("https://api.corona-zahlen.org/germany/history/deaths", (response) => {
+    let labels = [];
+    let series = [
+        {
+            type: "scatter",
+            name: "Datenpunkte",
+            data: [],
+            color: "#cccccc",
+            marker: {
+                radius: 3,
             },
-        ];
-        let labels_deaths = [];
-        let series_deaths = [
-            {
-                type: "scatter",
-                name: "Datenpunkte",
-                data: [],
-                color: "#cccccc",
-                marker: {
-                    radius: 3,
-                },
-            },
-        ];
+        },
+    ];
 
-        response.data.forEach((element) => {
-            let dateSplit = element.date.split("-");
-            let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
+    response.data.forEach((element) => {
+        let dateSplit = element.date.split("-");
+        let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
 
-            labels_cases.push(label);
-            labels_deaths.push(label);
-            series_deaths[0].data.push(element.deaths);
-            series_cases[0].data.push(element.cases);
-        });
+        labels.push(label);
+        series[0].data.push(element.deaths);
+    });
 
-        series_cases.push({
-            type: "line",
-            name: "7-Tages Durchschnitt",
-            data: sma(series_cases[0].data, 7),
-        });
-        series_deaths.push({
-            type: "line",
-            name: "7-Tages Durchschnitt",
-            data: sma(series_deaths[0].data, 7),
-        });
+    series.push({
+        type: "line",
+        name: "7-Tages Durchschnitt",
+        data: sma(series[0].data, 7),
+    });
 
-        plot("cases", "Fälle", "Fälle", labels_cases, series_cases);
-
-        plot("deaths", "Todesfälle", "Fälle", labels_deaths, series_deaths);
-    }
-);
+    plot("deaths", "Todesfälle", "Fälle", labels, series);
+});
 
 let div_vaccinations = document.createElement("div");
 div_vaccinations.id = "vaccinations";
