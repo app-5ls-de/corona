@@ -168,6 +168,10 @@ f(URL_host + "/country", (response) => {
             response.vaccinated,
             response.delta.vaccinated
         ),
+        createElToDisplay(
+            "Impffortschritt",
+            (response.secondVaccinationQuote * 100).toFixed(1) + "%"
+        ),
         createElToDisplay("Todesfälle", response.deaths, response.delta.deaths),
         createElToDisplay("R-Wert", response.rValue),
         createElToDisplay("Inzidenz", response.weekIncidence.toFixed(0)),
