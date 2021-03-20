@@ -98,8 +98,7 @@ new L.Control.Zoom({ position: "bottomleft" }).addTo(map);
 
 map.setView([51.33061163769853, 10.458984375000002], 6);
 
-var URL_host =
-    "https://api-corona-app-5ls-de-git-add-v2-patrickhaussmann.vercel.app";
+var URL_host = "https://api.corona.app.5ls.de";
 
 var URL_data = URL_host + "/districts";
 var URL_geojson = URL_host + "/districts.geojson";
