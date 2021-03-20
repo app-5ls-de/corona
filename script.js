@@ -48,14 +48,7 @@ new L.Control.Zoom({ position: "bottomleft" }).addTo(map);
 
 map.setView([51.33061163769853, 10.458984375000002], 6);
 
-var URL_host = "https://api.corona.app.5ls.de";
-
-var URL_data = URL_host + "/districts";
-var URL_geojson = URL_host + "/districts.geojson";
-var URL_country = URL_host + "/country";
-
-var data;
-var geojson;
+var data = {};
 var selected = "weekIncidence";
 
 var switcher = L.control({ position: "topleft" });
@@ -74,16 +67,49 @@ switcher.onAdd = function (map) {
     );
 
     function handleClick(e) {
+        let old_scope = config.series[selected].scope;
+        let scope = config.series[this.value].scope;
+
         selected = this.value;
         locked = false;
+
+        if (scope != old_scope) {
+            if (scope == "districts") {
+                draw(data.districts.geojson);
+            } else if (scope == "states") {
+                if (data.states) {
+                    draw(data.states.geojson);
+                } else {
+                    f(
+                        [
+                            config.scopes.states.geojsonURL,
+                            config.scopes.states.dataURL,
+                        ],
+                        (response) => {
+                            data.states = {
+                                geojson: response[0],
+                                data: response[1],
+                            };
+                            draw(data.states.geojson);
+                            Layer.resetStyle();
+                            legend.update();
+                            info.update();
+                        }
+                    );
+                    return;
+                }
+            } else {
+                console.error("scope is not known:", scope);
+            }
+        }
         Layer.resetStyle();
         legend.update();
         info.update();
     }
 
-    for (const key in config) {
-        if (Object.hasOwnProperty.call(config, key)) {
-            const element = config[key];
+    for (const key in config.series) {
+        if (Object.hasOwnProperty.call(config.series, key)) {
+            const element = config.series[key];
             redom.mount(
                 this._selection_container,
                 redom.el(
@@ -99,7 +125,7 @@ switcher.onAdd = function (map) {
                             checked: key == selected,
                         }
                     ),
-                    redom.el("label", config[key].name, {
+                    redom.el("label", element.name, {
                         for: "selection-" + key,
                     })
                 )
@@ -112,10 +138,17 @@ switcher.onAdd = function (map) {
 
 switcher.addTo(map);
 
-f([URL_geojson, URL_data], (response) => {
-    [geojson, data] = response;
-    draw();
-});
+f(
+    [config.scopes.districts.geojsonURL, config.scopes.districts.dataURL],
+    (response) => {
+        data.districts = {
+            geojson: response[0],
+            data: response[1],
+        };
+        document.getElementById("spinner").style.display = "none";
+        draw(data.districts.geojson);
+    }
+);
 
 var country_info = L.control({ position: "bottomright" });
 
@@ -126,7 +159,7 @@ country_info.onAdd = function (map) {
 
 country_info.addTo(map);
 
-f(URL_country, (response) => {
+f(URL_host + "/country", (response) => {
     mount(country_info._div, [
         redom.el("h4", "Bundesweit"),
         createElToDisplay("Fälle", response.cases, response.delta.cases),
@@ -173,7 +206,7 @@ function style(feature) {
 
     value = feature.data[selected];
 
-    config[selected].ranges.forEach((element) => {
+    config.series[selected].ranges.forEach((element) => {
         if (element.min <= value) {
             if (!element.max || value < element.max) color = element.color;
         }
@@ -192,11 +225,17 @@ function style(feature) {
 
 var locked = false;
 var Layer;
-function draw() {
-    document.getElementById("spinner").style.display = "none";
+function draw(geojson) {
+    if (Layer) map.removeLayer(Layer);
 
     function onEachFeature(feature, layer) {
-        feature.data = data.districts[feature.properties.rs];
+        let scope = config.series[selected].scope;
+        if (scope == "districts") {
+            feature.data = data.districts.data.districts[feature.properties.rs];
+        } else if (scope == "states") {
+            feature.data = data.states.data.states[feature.properties.name];
+            console.log(feature.properties.name);
+        }
 
         layer.on({
             mouseover: highlightFeature,
@@ -273,36 +312,69 @@ info.update = function (props) {
     if (props) {
         this._div.style.display = "";
         redom.setChildren(this._div, []);
-        mount(this._div, [
-            redom.el("h4", props.name),
-            createElToDisplay("Fälle", props.cases, props.delta.cases),
-            createElToDisplay("Todesfälle", props.deaths, props.delta.deaths),
-            createElToDisplay("Bevölkerung", props.population),
-            createElToDisplay("Inzidenz", props.weekIncidence.toFixed(0)),
-            createElToDisplay(
-                "Infektionsrate",
-                (props.casesRate * 100).toFixed(1) + "%"
-            ),
-            createElToDisplay(
-                "Letalitätsrate",
-                (props.deathRate * 100).toFixed(1) + "%"
-            ),
-            createElToDisplay(
-                "Freie Intensivbetten",
-                (props.proportionBedsAvailable * 100).toFixed(0) + "%"
-            ),
-            createElToDisplay(
-                "Intensivbetten mit Covid",
-                (props.proportionBedsCovid * 100).toFixed(0) + "%"
-            ),
-            redom.el(
-                "div.date",
-                new Date(data.lastUpdate).toLocaleDateString() +
-                    " (" +
-                    new Date(data.lastUpdate).toLocaleTimeString().slice(0, 4) +
-                    "Uhr)"
-            ),
-        ]);
+        let scope = config.series[selected].scope;
+        if (scope == "districts") {
+            mount(this._div, [
+                redom.el("h4", props.name),
+                createElToDisplay("Fälle", props.cases, props.delta.cases),
+                createElToDisplay(
+                    "Todesfälle",
+                    props.deaths,
+                    props.delta.deaths
+                ),
+                createElToDisplay("Bevölkerung", props.population),
+                createElToDisplay("Inzidenz", props.weekIncidence.toFixed(0)),
+                createElToDisplay(
+                    "Infektionsrate",
+                    (props.casesRate * 100).toFixed(1) + "%"
+                ),
+                createElToDisplay(
+                    "Letalitätsrate",
+                    (props.deathRate * 100).toFixed(1) + "%"
+                ),
+                createElToDisplay(
+                    "Freie Intensivbetten",
+                    (props.proportionBedsAvailable * 100).toFixed(0) + "%"
+                ),
+                createElToDisplay(
+                    "Intensivbetten mit Covid",
+                    (props.proportionBedsCovid * 100).toFixed(0) + "%"
+                ),
+                redom.el(
+                    "div.date",
+                    new Date(data.lastUpdate).toLocaleDateString() +
+                        " (" +
+                        new Date(data.lastUpdate)
+                            .toLocaleTimeString()
+                            .slice(0, 4) +
+                        "Uhr)"
+                ),
+            ]);
+        } else if (scope == "states") {
+            mount(this._div, [
+                redom.el("h4", props.name),
+                createElToDisplay("Fälle", props.cases, props.delta.cases),
+                createElToDisplay(
+                    "Todesfälle",
+                    props.deaths,
+                    props.delta.deaths
+                ),
+                createElToDisplay("Bevölkerung", props.population),
+                createElToDisplay("Inzidenz", props.weekIncidence.toFixed(0)),
+                createElToDisplay(
+                    "Infektionsrate",
+                    (props.casesRate * 100).toFixed(1) + "%"
+                ),
+                createElToDisplay(
+                    "Letalitätsrate",
+                    (props.deathRate * 100).toFixed(1) + "%"
+                ),
+                createElToDisplay(
+                    "Impffortschritt",
+                    (props.secondVaccinationQuote * 100).toFixed(1) + "%"
+                ),
+            ]);
+        }
     } else {
         this._div.style.display = "none";
         redom.setChildren(this._div, []);
@@ -323,9 +395,9 @@ legend.onAdd = function (map) {
 legend.update = function () {
     redom.setChildren(this._div, []);
     let format = (a) => a;
-    if (config[selected].unit == "%")
+    if (config.series[selected].unit == "%")
         format = (a) => (a * 100).toFixed(1) + " %";
-    config[selected].ranges.forEach((element) => {
+    config.series[selected].ranges.forEach((element) => {
         if (element.min != undefined) {
             if (element.max) {
                 text = "<" + format(element.max);
