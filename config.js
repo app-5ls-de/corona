@@ -162,13 +162,13 @@ var config = {
             ],
         },
         {
-            name: "Inzidenz weltweit",
+            name: "Inzidenz Welt",
             key: "weekIncidence",
             scope: "world",
             ranges: IncidenceRanges,
         },
         {
-            name: "Infektionsrate weltweit",
+            name: "Infektionsrate Welt",
             key: "casesRate",
             scope: "world",
             unit: "%",
