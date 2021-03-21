@@ -93,8 +93,12 @@ body,
     text-align: center;
 }
 
-.switcher > .buttons  button {
+.switcher > .buttons button {
     font-size: 1rem;
+}
+
+.switcher > .buttons h4 {
+    margin: 0;
 }
 
 .legend > .colorSquare {
