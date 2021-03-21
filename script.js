@@ -49,7 +49,7 @@ new L.Control.Zoom({ position: "bottomleft" }).addTo(map);
 map.setView([51.33061163769853, 10.458984375000002], 6);
 
 var data = {};
-var selected = "weekIncidence";
+var selected = 0;
 
 var switcher = L.control({ position: "topleft" });
 
@@ -76,21 +76,21 @@ switcher.onAdd = function (map) {
         if (scope != old_scope) {
             if (scope == "districts") {
                 draw(data.districts.geojson);
-            } else if (scope == "states") {
-                if (data.states) {
-                    draw(data.states.geojson);
+            } else {
+                if (data[scope]) {
+                    draw(data[scope].geojson);
                 } else {
                     f(
                         [
-                            config.scopes.states.geojsonURL,
-                            config.scopes.states.dataURL,
+                            config.scopes[scope].geojsonURL,
+                            config.scopes[scope].dataURL,
                         ],
                         (response) => {
-                            data.states = {
+                            data[scope] = {
                                 geojson: response[0],
                                 data: response[1],
                             };
-                            draw(data.states.geojson);
+                            draw(data[scope].geojson);
                             Layer.resetStyle();
                             legend.update();
                             info.update();
@@ -98,8 +98,6 @@ switcher.onAdd = function (map) {
                     );
                     return;
                 }
-            } else {
-                console.error("scope is not known:", scope);
             }
         }
         Layer.resetStyle();
@@ -107,30 +105,29 @@ switcher.onAdd = function (map) {
         info.update();
     }
 
-    for (const key in config.series) {
-        if (Object.hasOwnProperty.call(config.series, key)) {
-            const element = config.series[key];
-            redom.mount(
-                this._selection_container,
+    for (let i = 0; i < config.series.length; i++) {
+        const element = config.series[i];
+
+        redom.mount(
+            this._selection_container,
+            redom.el(
+                "div.selection",
                 redom.el(
-                    "div.selection",
-                    redom.el(
-                        "input",
-                        (el) => el.addEventListener("click", handleClick),
-                        {
-                            type: "radio",
-                            name: "selection",
-                            id: "selection-" + key,
-                            value: key,
-                            checked: key == selected,
-                        }
-                    ),
-                    redom.el("label", element.name, {
-                        for: "selection-" + key,
-                    })
-                )
-            );
-        }
+                    "input",
+                    (el) => el.addEventListener("click", handleClick),
+                    {
+                        type: "radio",
+                        name: "selection",
+                        id: "selection-" + i,
+                        value: i,
+                        checked: i == selected,
+                    }
+                ),
+                redom.el("label", element.name, {
+                    for: "selection-" + i,
+                })
+            )
+        );
     }
 
     return this._div;
@@ -202,15 +199,15 @@ function createElToDisplay(label, value, delta) {
 
 function style(feature) {
     color = "#a0a0a0";
-    if (!feature.data) return;
+    if (feature.data) {
+        value = feature.data[config.series[selected].key];
 
-    value = feature.data[selected];
-
-    config.series[selected].ranges.forEach((element) => {
-        if (element.min <= value) {
-            if (!element.max || value < element.max) color = element.color;
-        }
-    });
+        config.series[selected].ranges.forEach((element) => {
+            if (element.min <= value) {
+                if (!element.max || value < element.max) color = element.color;
+            }
+        });
+    }
 
     let options = {
         radius: 8,
@@ -234,6 +231,8 @@ function draw(geojson) {
             feature.data = data.districts.data.districts[feature.properties.rs];
         } else if (scope == "states") {
             feature.data = data.states.data.states[feature.properties.name];
+        } else if (scope == "world") {
+            feature.data = data.world.data[feature.properties.adm0_a3_is];
         }
 
         layer.on({
@@ -268,7 +267,7 @@ function draw(geojson) {
     }
 
     function lockHighlight(e) {
-        console.log(e.target.feature.data);
+        console.log(e.target.feature);
 
         locked = false;
         Layer.resetStyle();
@@ -373,6 +372,35 @@ info.update = function (props) {
                     new Date(data.states.data.lastUpdate).toLocaleString()
                 ),
             ]);
+        } else if (scope == "world") {
+            mount(
+                this._div,
+                [
+                    redom.el("h4", props.location),
+                    createElToDisplay("Bevölkerung", props.population),
+                    props.weekIncidence &&
+                        createElToDisplay(
+                            "Inzidenz",
+                            props.weekIncidence.toFixed(0)
+                        ),
+                    props.people_vaccinated_per_hundred &&
+                        createElToDisplay(
+                            "Impffortschritt",
+                            props.people_vaccinated_per_hundred.toFixed(1) + "%"
+                        ),
+                    props.casesRate &&
+                        createElToDisplay(
+                            "Infektionsrate",
+                            (props.casesRate * 100).toFixed(1) + "%"
+                        ),
+                    props.deathRate &&
+                        createElToDisplay(
+                            "Letalitätsrate",
+                            (props.deathRate * 100).toFixed(1) + "%"
+                        ),
+                    redom.el("div.date", new Date(props.date).toLocaleString()),
+                ].filter((el) => el)
+            );
         }
     } else {
         this._div.style.display = "none";
