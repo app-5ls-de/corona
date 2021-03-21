@@ -175,13 +175,9 @@ f(URL_host + "/country", (response) => {
         createElToDisplay("Todesfälle", response.deaths, response.delta.deaths),
         createElToDisplay("R-Wert", response.rValue),
         createElToDisplay("Inzidenz", response.weekIncidence.toFixed(0)),
-        redom.el(
-            "div.date",
-            new Date(response.lastUpdate).toLocaleDateString() + " (8:30Uhr)",
-            {
-                title: "Daten von 0Uhr, veröffentlicht um 8:30Uhr",
-            }
-        ),
+        redom.el("div.date", new Date(response.lastUpdate).toLocaleString(), {
+            title: "Daten von 0Uhr, veröffentlicht um 8:30Uhr",
+        }),
     ]);
 });
 
@@ -343,12 +339,7 @@ info.update = function (props) {
                 ),
                 redom.el(
                     "div.date",
-                    new Date(data.lastUpdate).toLocaleDateString() +
-                        " (" +
-                        new Date(data.lastUpdate)
-                            .toLocaleTimeString()
-                            .slice(0, 4) +
-                        "Uhr)"
+                    new Date(data.districts.data.lastUpdate).toLocaleString()
                 ),
             ]);
         } else if (scope == "states") {
@@ -373,6 +364,10 @@ info.update = function (props) {
                 createElToDisplay(
                     "Impffortschritt",
                     (props.secondVaccinationQuote * 100).toFixed(1) + "%"
+                ),
+                redom.el(
+                    "div.date",
+                    new Date(data.states.data.lastUpdate).toLocaleString()
                 ),
             ]);
         }
