@@ -93,6 +93,7 @@ switcher.onAdd = function (map) {
                             draw(data[scope].geojson);
                             Layer.resetStyle();
                             legend.update();
+                            country_info.update();
                             info.update();
                         }
                     );
@@ -102,6 +103,7 @@ switcher.onAdd = function (map) {
         }
         Layer.resetStyle();
         legend.update();
+        country_info.update();
         info.update();
     }
 
@@ -149,33 +151,73 @@ f(
 
 var country_info = L.control({ position: "bottomright" });
 
-country_info.onAdd = function (map) {
+country_info.onAdd = function () {
     this._div = redom.el("div.info.country_info");
     return this._div;
+};
+
+country_info.update = function () {
+    let scope = config.series[selected].scope;
+    redom.setChildren(this._div, []);
+    if (scope == "world") {
+        const world_data = data.world.data.OWID_WRL;
+        mount(country_info._div, [
+            redom.el("h4", "Weltweit"),
+            createElToDisplay("Bevölkerung", world_data.population),
+            createElToDisplay("Inzidenz", world_data.weekIncidence.toFixed(0)),
+            createElToDisplay(
+                "Infektionsrate",
+                (world_data.casesRate * 100).toFixed(1) + "%"
+            ),
+            createElToDisplay(
+                "Letalitätsrate",
+                (world_data.deathRate * 100).toFixed(1) + "%"
+            ),
+            redom.el(
+                "div.date",
+                new Date(world_data.date).toLocaleDateString()
+            ),
+        ]);
+    } else {
+        mount(country_info._div, [
+            redom.el("h4", "Bundesweit"),
+            createElToDisplay(
+                "Fälle",
+                data.country.cases,
+                data.country.delta.cases
+            ),
+            createElToDisplay(
+                "Impfungen",
+                data.country.vaccinated,
+                data.country.delta.vaccinated
+            ),
+            createElToDisplay(
+                "Impffortschritt",
+                (data.country.secondVaccinationQuote * 100).toFixed(1) + "%"
+            ),
+            createElToDisplay(
+                "Todesfälle",
+                data.country.deaths,
+                data.country.delta.deaths
+            ),
+            createElToDisplay("R-Wert", data.country.rValue),
+            createElToDisplay(
+                "Inzidenz",
+                data.country.weekIncidence.toFixed(0)
+            ),
+            redom.el(
+                "div.date",
+                new Date(data.country.lastUpdate).toLocaleDateString()
+            ),
+        ]);
+    }
 };
 
 country_info.addTo(map);
 
 f(URL_host + "/country", (response) => {
-    mount(country_info._div, [
-        redom.el("h4", "Bundesweit"),
-        createElToDisplay("Fälle", response.cases, response.delta.cases),
-        createElToDisplay(
-            "Impfungen",
-            response.vaccinated,
-            response.delta.vaccinated
-        ),
-        createElToDisplay(
-            "Impffortschritt",
-            (response.secondVaccinationQuote * 100).toFixed(1) + "%"
-        ),
-        createElToDisplay("Todesfälle", response.deaths, response.delta.deaths),
-        createElToDisplay("R-Wert", response.rValue),
-        createElToDisplay("Inzidenz", response.weekIncidence.toFixed(0)),
-        redom.el("div.date", new Date(response.lastUpdate).toLocaleString(), {
-            title: "Daten von 0Uhr, veröffentlicht um 8:30Uhr",
-        }),
-    ]);
+    data.country = response;
+    country_info.update();
 });
 
 function createElToDisplay(label, value, delta) {
