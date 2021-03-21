@@ -186,6 +186,42 @@ f("https://api.corona-zahlen.org/vaccinations/history", (response) => {
     plot("vaccinations", "Impfungen", "Anzahl", labels, series);
 });
 
+let div_rValue = document.createElement("div");
+div_rValue.id = "rValue";
+div_container.appendChild(div_rValue);
+
+f("https://api.corona.app.5ls.de/rValue", (response) => {
+    let labels = [];
+    let series = [
+        {
+            type: "scatter",
+            name: "Datenpunkte",
+            data: [],
+            color: "#cccccc",
+            marker: {
+                radius: 2,
+            },
+        },
+        {
+            type: "line",
+            name: "7-Tages Durchschnitt",
+            data: [],
+            visible: true,
+        },
+    ];
+
+    response.data.forEach((element) => {
+        let dateSplit = element.date.split("-");
+        let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
+
+        labels.push(label);
+        series[0].data.push(element.rValue);
+        series[1].data.push(element.rValue7day);
+    });
+
+    plot("rValue", "R-Wert", "R-Wert", labels, series);
+});
+
 let div_weekIncidence = document.createElement("div");
 div_weekIncidence.id = "weekIncidence";
 div_container.appendChild(div_weekIncidence);
