@@ -383,7 +383,9 @@ info.update = function (props) {
                 ),
                 redom.el(
                     "div.date",
-                    new Date(data.districts.data.lastUpdate).toLocaleString()
+                    new Date(
+                        data.districts.data.lastUpdate
+                    ).toLocaleDateString()
                 ),
             ]);
         } else if (scope == "states") {
@@ -411,7 +413,7 @@ info.update = function (props) {
                 ),
                 redom.el(
                     "div.date",
-                    new Date(data.states.data.lastUpdate).toLocaleString()
+                    new Date(data.states.data.lastUpdate).toLocaleDateString()
                 ),
             ]);
         } else if (scope == "world") {
@@ -440,7 +442,10 @@ info.update = function (props) {
                             "Letalitätsrate",
                             (props.deathRate * 100).toFixed(1) + "%"
                         ),
-                    redom.el("div.date", new Date(props.date).toLocaleString()),
+                    redom.el(
+                        "div.date",
+                        new Date(props.date).toLocaleDateString()
+                    ),
                 ].filter((el) => el)
             );
         }
