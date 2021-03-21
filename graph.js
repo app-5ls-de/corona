@@ -169,6 +169,7 @@ f("https://api.corona-zahlen.org/vaccinations/history", (response) => {
         {
             type: "line",
             name: "Zweite Impfung",
+            color: "#547BBA",
             data: [],
             visible: true,
         },
