@@ -185,7 +185,7 @@ var config = {
             geojsonURL: URL_host + "/states.geojson",
         },
         world: {
-            dataURL:  "http://localhost:3000/world",
+            dataURL: URL_host + "/world",
             geojsonURL: "/world.geojson",
         },
     },
