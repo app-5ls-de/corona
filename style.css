@@ -93,6 +93,10 @@ body,
     text-align: center;
 }
 
+.switcher > .buttons  button {
+    font-size: 1rem;
+}
+
 .legend > .colorSquare {
     height: 1rem;
     width: 1rem;
