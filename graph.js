@@ -92,6 +92,18 @@ let div_deaths = document.createElement("div");
 div_deaths.id = "deaths";
 div_container.appendChild(div_deaths);
 
+let div_vaccinations = document.createElement("div");
+div_vaccinations.id = "vaccinations";
+div_container.appendChild(div_vaccinations);
+
+let div_rValue = document.createElement("div");
+div_rValue.id = "rValue";
+div_container.appendChild(div_rValue);
+
+let div_weekIncidence = document.createElement("div");
+div_weekIncidence.id = "weekIncidence";
+div_container.appendChild(div_weekIncidence);
+
 let div_deathRate = document.createElement("div");
 div_deathRate.id = "deathRate";
 div_container.appendChild(div_deathRate);
@@ -171,10 +183,6 @@ f("https://api.corona.app.5ls.de/history", (response) => {
     );
 });
 
-let div_vaccinations = document.createElement("div");
-div_vaccinations.id = "vaccinations";
-div_container.appendChild(div_vaccinations);
-
 f("https://api.corona-zahlen.org/vaccinations/history", (response) => {
     let labels = [];
     let series = [
@@ -204,10 +212,6 @@ f("https://api.corona-zahlen.org/vaccinations/history", (response) => {
 
     plot("vaccinations", "Impfungen", "Anzahl", labels, series);
 });
-
-let div_rValue = document.createElement("div");
-div_rValue.id = "rValue";
-div_container.appendChild(div_rValue);
 
 f("https://api.corona.app.5ls.de/rValue", (response) => {
     let labels = [];
@@ -240,10 +244,6 @@ f("https://api.corona.app.5ls.de/rValue", (response) => {
 
     plot("rValue", "R-Wert", "R-Wert", labels, series);
 });
-
-let div_weekIncidence = document.createElement("div");
-div_weekIncidence.id = "weekIncidence";
-div_container.appendChild(div_weekIncidence);
 
 f("https://api.corona-zahlen.org/germany/history/incidence", (response) => {
     let labels = [];
