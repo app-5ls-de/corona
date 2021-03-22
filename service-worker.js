@@ -13,6 +13,7 @@ const PRECACHE_URLS = [
     "/style.css",
     "/graph",
     "/graph.js",
+    "/back.svg",
     "https://api.corona.app.5ls.de/districts.geojson",
     "https://api.corona.app.5ls.de/states.geojson",
     "/world.geojson",
