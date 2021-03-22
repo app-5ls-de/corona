@@ -88,69 +88,87 @@ let div_cases = document.createElement("div");
 div_cases.id = "cases";
 div_container.appendChild(div_cases);
 
-f("https://api.corona-zahlen.org/germany/history/cases", (response) => {
-    let labels = [];
-    let series = [
-        {
-            type: "scatter",
-            name: "Datenpunkte",
-            data: [],
-            color: "#cccccc",
-            marker: {
-                radius: 3,
-            },
-        },
-    ];
-
-    response.data.forEach((element) => {
-        let dateSplit = element.date.split("-");
-        let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
-
-        labels.push(label);
-        series[0].data.push(element.cases);
-    });
-
-    series.push({
-        type: "line",
-        name: "7-Tages Durchschnitt",
-        data: sma(series[0].data, 7),
-    });
-    plot("cases", "Fälle", "Fälle", labels, series);
-});
-
 let div_deaths = document.createElement("div");
 div_deaths.id = "deaths";
 div_container.appendChild(div_deaths);
 
-f("https://api.corona-zahlen.org/germany/history/deaths", (response) => {
+let div_deathRate = document.createElement("div");
+div_deathRate.id = "deathRate";
+div_container.appendChild(div_deathRate);
+
+f("https://api.corona.app.5ls.de/history", (response) => {
     let labels = [];
-    let series = [
-        {
-            type: "scatter",
-            name: "Datenpunkte",
-            data: [],
-            color: "#cccccc",
-            marker: {
-                radius: 3,
+    let series = {
+        cases: [
+            {
+                type: "scatter",
+                name: "Datenpunkte",
+                data: [],
+                color: "#cccccc",
+                marker: {
+                    radius: 3,
+                },
             },
-        },
-    ];
+        ],
+        deaths: [
+            {
+                type: "scatter",
+                name: "Datenpunkte",
+                data: [],
+                color: "#cccccc",
+                marker: {
+                    radius: 3,
+                },
+            },
+        ],
+        deathRate: [
+            {
+                type: "scatter",
+                name: "Letalitätsrate",
+                data: [],
+                color: "#cccccc",
+                marker: {
+                    radius: 3,
+                },
+            },
+        ],
+    };
 
     response.data.forEach((element) => {
         let dateSplit = element.date.split("-");
         let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
 
         labels.push(label);
-        series[0].data.push(element.deaths);
+        series.cases[0].data.push(element.cases);
+        series.deaths[0].data.push(element.deaths);
+        series.deathRate[0].data.push(element.deathRate);
     });
 
-    series.push({
+    series.cases.push({
         type: "line",
         name: "7-Tages Durchschnitt",
-        data: sma(series[0].data, 7),
+        data: sma(series.cases[0].data, 7),
+    });
+    series.deaths.push({
+        type: "line",
+        name: "7-Tages Durchschnitt",
+        data: sma(series.deaths[0].data, 7),
+    });
+    series.deathRate.push({
+        type: "line",
+        name: "7-Tages Durchschnitt",
+        data: sma(series.deathRate[0].data, 7, (a) => a),
     });
 
-    plot("deaths", "Todesfälle", "Fälle", labels, series);
+    plot("cases", "Fälle", "Fälle", labels, series.cases);
+    plot("deaths", "Todesfälle", "Fälle", labels, series.deaths);
+    plot(
+        "deathRate",
+        "Letalitätsrate",
+        "Letalitätsrate",
+        labels,
+        series.deathRate
+    );
 });
 
 let div_vaccinations = document.createElement("div");
