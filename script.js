@@ -93,7 +93,7 @@ switcher.onAdd = function (map) {
                             draw(data[scope].geojson);
                             Layer.resetStyle();
                             legend.update();
-                            country_info.update();
+                            region_info.update();
                             info.update();
                         }
                     );
@@ -103,7 +103,7 @@ switcher.onAdd = function (map) {
         }
         Layer.resetStyle();
         legend.update();
-        country_info.update();
+        region_info.update();
         info.update();
     }
 
@@ -149,19 +149,19 @@ f(
     }
 );
 
-var country_info = L.control({ position: "bottomright" });
+var region_info = L.control({ position: "bottomright" });
 
-country_info.onAdd = function () {
+region_info.onAdd = function () {
     this._div = redom.el("div.info.country_info");
     return this._div;
 };
 
-country_info.update = function () {
+region_info.update = function () {
     let scope = config.series[selected].scope;
     redom.setChildren(this._div, []);
     if (scope == "world") {
         const world_data = data.world.data.OWID_WRL;
-        mount(country_info._div, [
+        mount(region_info._div, [
             redom.el("h4", "Weltweit"),
             createElToDisplay("Bevölkerung", world_data.population),
             createElToDisplay("Inzidenz", world_data.weekIncidence.toFixed(0)),
@@ -179,7 +179,7 @@ country_info.update = function () {
             ),
         ]);
     } else {
-        mount(country_info._div, [
+        mount(region_info._div, [
             redom.el("h4", "Bundesweit"),
             createElToDisplay(
                 "Fälle",
@@ -213,11 +213,11 @@ country_info.update = function () {
     }
 };
 
-country_info.addTo(map);
+region_info.addTo(map);
 
 f(URL_host + "/country", (response) => {
     data.country = response;
-    country_info.update();
+    region_info.update();
 });
 
 function createElToDisplay(label, value, delta) {
