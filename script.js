@@ -321,14 +321,14 @@ function draw(geojson) {
         onEachFeature: onEachFeature,
         style: style,
         attribution:
+            '<a href="https://github.com/PatrickHaussmann/api.corona.app.5ls.de" target="_blank">Source</a> | ' +
             'Quellen: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html/" target="_blank">RKI</a>, ' +
             '<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Projekte_RKI/Nowcasting.html" target="_blank">RKI</a>, ' +
             '<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquoten-Tab.html" target="_blank">RKI</a>, ' +
             '<a href="https://github.com/owid/covid-19-data/tree/master/public/data" target="_blank">OWID</a>, ' +
             '<a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0/data" target="_blank">RKI</a>, ' +
             '<a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/ef4b445a53c1406892257fe63129a8ea_0/data" target="_blank">RKI</a>, ' +
-            '<a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/917fc37a709542548cc3be077a786c17_0/data" target="_blank">DIVI</a>, ' +
-            '<a href="https://github.com/PatrickHaussmann/api.corona.app.5ls.de" target="_blank">source</a>',
+            '<a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/917fc37a709542548cc3be077a786c17_0/data" target="_blank">DIVI</a>',
     });
     Layer.addTo(map);
 
