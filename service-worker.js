@@ -71,7 +71,8 @@ self.addEventListener("fetch", (event) => {
     // Skip cross-origin requests, like those for Google Analytics.
     if (
         event.request.url.startsWith(self.location.origin) ||
-        event.request.url.startsWith("https://cdn.jsdelivr.net/")
+        event.request.url.startsWith("https://cdn.jsdelivr.net/") ||
+        event.request.url.endsWith(".geojson")
     ) {
         event.respondWith(
             caches
