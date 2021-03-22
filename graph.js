@@ -136,7 +136,7 @@ f("https://api.corona.app.5ls.de/history", (response) => {
         deathRate: [
             {
                 type: "scatter",
-                name: "Letalitätsrate",
+                name: "Datenpunkte",
                 data: [],
                 color: "#cccccc",
                 marker: {
@@ -153,7 +153,9 @@ f("https://api.corona.app.5ls.de/history", (response) => {
         labels.push(label);
         series.cases[0].data.push(element.cases);
         series.deaths[0].data.push(element.deaths);
-        series.deathRate[0].data.push(element.deathRate);
+        series.deathRate[0].data.push(
+            parseFloat((element.deathRate * 100).toPrecision(3))
+        );
     });
 
     series.cases.push({
@@ -169,7 +171,9 @@ f("https://api.corona.app.5ls.de/history", (response) => {
     series.deathRate.push({
         type: "line",
         name: "7-Tages Durchschnitt",
-        data: sma(series.deathRate[0].data, 7, (a) => a),
+        data: sma(series.deathRate[0].data, 7, (a) =>
+            parseFloat(a.toPrecision(3))
+        ),
     });
 
     plot("cases", "Fälle", "Fälle", labels, series.cases);
@@ -177,7 +181,7 @@ f("https://api.corona.app.5ls.de/history", (response) => {
     plot(
         "deathRate",
         "Letalitätsrate",
-        "Letalitätsrate",
+        "Letalitätsrate in %",
         labels,
         series.deathRate
     );
