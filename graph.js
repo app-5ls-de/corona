@@ -100,13 +100,13 @@ let div_rValue = document.createElement("div");
 div_rValue.id = "rValue";
 div_container.appendChild(div_rValue);
 
-let div_weekIncidence = document.createElement("div");
-div_weekIncidence.id = "weekIncidence";
-div_container.appendChild(div_weekIncidence);
-
 let div_deathRate = document.createElement("div");
 div_deathRate.id = "deathRate";
 div_container.appendChild(div_deathRate);
+
+let div_weekIncidence = document.createElement("div");
+div_weekIncidence.id = "weekIncidence";
+div_container.appendChild(div_weekIncidence);
 
 f("https://api.corona.app.5ls.de/history", (response) => {
     let labels = [];
