@@ -182,6 +182,15 @@ region_info.update = function () {
         mount(region_info._div, [
             redom.el("h4", "Bundesweit"),
             createElToDisplay(
+                "Inzidenz",
+                data.country.weekIncidence.toFixed(0)
+            ),
+            createElToDisplay(
+                "Impffortschritt",
+                (data.country.secondVaccinationQuote * 100).toFixed(1) + "%"
+            ),
+            createElToDisplay("R-Wert", data.country.rValue),
+            createElToDisplay(
                 "Fälle",
                 data.country.cases,
                 data.country.delta.cases
@@ -192,18 +201,9 @@ region_info.update = function () {
                 data.country.delta.vaccinated
             ),
             createElToDisplay(
-                "Impffortschritt",
-                (data.country.secondVaccinationQuote * 100).toFixed(1) + "%"
-            ),
-            createElToDisplay(
                 "Todesfälle",
                 data.country.deaths,
                 data.country.delta.deaths
-            ),
-            createElToDisplay("R-Wert", data.country.rValue),
-            createElToDisplay(
-                "Inzidenz",
-                data.country.weekIncidence.toFixed(0)
             ),
             redom.el(
                 "div.date",
@@ -359,13 +359,6 @@ info.update = function (props) {
         if (scope == "districts") {
             mount(this._div, [
                 redom.el("h4", props.name),
-                createElToDisplay("Fälle", props.cases, props.delta.cases),
-                createElToDisplay(
-                    "Todesfälle",
-                    props.deaths,
-                    props.delta.deaths
-                ),
-                createElToDisplay("Bevölkerung", props.population),
                 createElToDisplay("Inzidenz", props.weekIncidence.toFixed(0)),
                 createElToDisplay(
                     "Infektionsrate",
@@ -375,6 +368,13 @@ info.update = function (props) {
                     "Letalitätsrate",
                     (props.deathRate * 100).toFixed(1) + "%"
                 ),
+                createElToDisplay("Fälle", props.cases, props.delta.cases),
+                createElToDisplay(
+                    "Todesfälle",
+                    props.deaths,
+                    props.delta.deaths
+                ),
+                createElToDisplay("Bevölkerung", props.population),
                 createElToDisplay(
                     "Freie Intensivbetten",
                     (props.proportionBedsAvailable * 100).toFixed(0) + "%"
@@ -393,13 +393,6 @@ info.update = function (props) {
         } else if (scope == "states") {
             mount(this._div, [
                 redom.el("h4", props.name),
-                createElToDisplay("Fälle", props.cases, props.delta.cases),
-                createElToDisplay(
-                    "Todesfälle",
-                    props.deaths,
-                    props.delta.deaths
-                ),
-                createElToDisplay("Bevölkerung", props.population),
                 createElToDisplay("Inzidenz", props.weekIncidence.toFixed(0)),
                 createElToDisplay(
                     "Infektionsrate",
@@ -413,6 +406,13 @@ info.update = function (props) {
                     "Impffortschritt",
                     (props.secondVaccinationQuote * 100).toFixed(1) + "%"
                 ),
+                createElToDisplay("Fälle", props.cases, props.delta.cases),
+                createElToDisplay(
+                    "Todesfälle",
+                    props.deaths,
+                    props.delta.deaths
+                ),
+                createElToDisplay("Bevölkerung", props.population),
                 redom.el(
                     "div.date",
                     new Date(data.states.data.lastUpdate).toLocaleDateString()
@@ -423,26 +423,25 @@ info.update = function (props) {
                 this._div,
                 [
                     redom.el("h4", props.location),
+                    createElToDisplay(
+                        "Inzidenz",
+                        props.weekIncidence && props.weekIncidence.toFixed(0)
+                    ),
+                    createElToDisplay(
+                        "Infektionsrate",
+                        props.casesRate &&
+                            (props.casesRate * 100).toFixed(1) + "%"
+                    ),
+                    createElToDisplay(
+                        "Letalitätsrate",
+                        props.deathRate &&
+                            (props.deathRate * 100).toFixed(1) + "%"
+                    ),
                     createElToDisplay("Bevölkerung", props.population),
-                    props.weekIncidence &&
-                        createElToDisplay(
-                            "Inzidenz",
-                            props.weekIncidence.toFixed(0)
-                        ),
                     props.people_vaccinated_per_hundred &&
                         createElToDisplay(
                             "Impffortschritt",
                             props.people_vaccinated_per_hundred.toFixed(1) + "%"
-                        ),
-                    props.casesRate &&
-                        createElToDisplay(
-                            "Infektionsrate",
-                            (props.casesRate * 100).toFixed(1) + "%"
-                        ),
-                    props.deathRate &&
-                        createElToDisplay(
-                            "Letalitätsrate",
-                            (props.deathRate * 100).toFixed(1) + "%"
                         ),
                     redom.el(
                         "div.date",
