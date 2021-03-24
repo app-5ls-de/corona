@@ -178,11 +178,11 @@ var config = {
     scopes: {
         districts: {
             dataURL: URL_host + "/districts",
-            geojsonURL: URL_host + "/districts.geojson",
+            geojsonURL: "/districts.geojson",
         },
         states: {
             dataURL: URL_host + "/states",
-            geojsonURL: URL_host + "/states.geojson",
+            geojsonURL: "/states.geojson",
         },
         world: {
             dataURL: URL_host + "/world",
