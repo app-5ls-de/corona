@@ -58,12 +58,6 @@ function plot(id, title, yLabel, categories, series) {
         title: {
             text: title,
         },
-        subtitle: {
-            text:
-                document.ontouchstart === undefined
-                    ? "Klicken und ziehen Sie im Plotbereich, um zu vergrößern"
-                    : "Ziehen Sie das Diagramm zusammen, um zu vergrößern",
-        },
         tooltip: {
             shared: true,
             crosshairs: true,
