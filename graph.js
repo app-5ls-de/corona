@@ -15,7 +15,7 @@ function sma(arr, range, format) {
 
     var fn = typeof format === "function" ? format : Math.round;
     var num = range || arr.length;
-    var res = [];
+    var res = Array(Math.round(num / 2)).fill(null);
     var len = arr.length + 1;
     var idx = num - 1;
     while (++idx < len) {
