@@ -140,27 +140,27 @@ var config = {
             unit: "%",
             ranges: [
                 {
-                    min: 0,
-                    max: 0.035,
-                    color: "#88b9b2",
-                },
-                {
                     min: 0.035,
                     max: 0.04,
-                    color: "#6fa9a6",
+                    color: "#88b9b2",
                 },
                 {
                     min: 0.04,
                     max: 0.045,
-                    color: "#3a7e8d",
+                    color: "#6fa9a6",
                 },
                 {
                     min: 0.045,
                     max: 0.05,
-                    color: "#316079",
+                    color: "#3a7e8d",
                 },
                 {
                     min: 0.05,
+                    max: 0.06,
+                    color: "#316079",
+                },
+                {
+                    min: 0.06,
                     max: null,
                     color: "#274265",
                 },
