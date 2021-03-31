@@ -1,3 +1,4 @@
+var cache = {};
 function f(urls, callback) {
     if (Array.isArray(urls)) {
         var array = urls;
@@ -5,17 +6,31 @@ function f(urls, callback) {
         var array = [urls];
     }
     Promise.all(
-        array.map((url) =>
-            fetch(url)
-                .then((response) => {
-                    if (response.ok) {
-                        return Promise.resolve(response);
-                    } else {
-                        return Promise.reject(new Error(response.statusText));
-                    }
-                })
-                .then((response) => response.json())
-        )
+        array.map((url) => {
+            if (cache[url]) {
+                return Promise.resolve(cache[url]);
+            } else {
+                return fetch(url)
+                    .then((response) => {
+                        if (response.ok) {
+                            return Promise.resolve(response);
+                        } else {
+                            return Promise.reject(
+                                new Error(response.statusText)
+                            );
+                        }
+                    })
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((response) => {
+                        if (url.startsWith(URL_host)) {
+                            cache[url] = response;
+                        }
+                        return response;
+                    });
+            }
+        })
     )
         .then((response) => {
             if (Array.isArray(urls)) {
@@ -135,8 +150,6 @@ switcher.onAdd = function (map) {
     return this._div;
 };
 
-switcher.addTo(map);
-
 f(
     [config.scopes.districts.geojsonURL, config.scopes.districts.dataURL],
     (response) => {
@@ -146,6 +159,15 @@ f(
         };
         document.getElementById("spinner").style.display = "none";
         draw(data.districts.geojson);
+
+        let urlsToCache = [
+            URL_host + "/world",
+            URL_host + "/states",
+        ];
+        f(urlsToCache, (response) => {
+            console.log("cached:", urlsToCache);
+            switcher.addTo(map);
+        });
     }
 );
 
