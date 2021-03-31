@@ -229,6 +229,14 @@ f("https://api.corona.app.5ls.de/rValue", (response) => {
             name: "7-Tages Durchschnitt",
             data: [],
             visible: true,
+            zones: [
+                {
+                    value: 1,
+                },
+                {
+                    color: "#d14f69",
+                },
+            ],
         },
     ];
 
