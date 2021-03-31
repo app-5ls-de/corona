@@ -150,27 +150,6 @@ switcher.onAdd = function (map) {
     return this._div;
 };
 
-f(
-    [config.scopes.districts.geojsonURL, config.scopes.districts.dataURL],
-    (response) => {
-        data.districts = {
-            geojson: response[0],
-            data: response[1],
-        };
-        document.getElementById("spinner").style.display = "none";
-        draw(data.districts.geojson);
-
-        let urlsToCache = [
-            URL_host + "/world",
-            URL_host + "/states",
-        ];
-        f(urlsToCache, (response) => {
-            console.log("cached:", urlsToCache);
-            switcher.addTo(map);
-        });
-    }
-);
-
 var region_info = L.control({ position: "bottomright" });
 
 region_info.onAdd = function () {
@@ -234,13 +213,6 @@ region_info.update = function () {
         ]);
     }
 };
-
-region_info.addTo(map);
-
-f(URL_host + "/country", (response) => {
-    data.country = response;
-    region_info.update();
-});
 
 function createElToDisplay(label, value, delta) {
     let delta_el;
@@ -513,3 +485,30 @@ legend.update = function () {
 };
 
 legend.addTo(map);
+
+// Stage 1
+f(
+    [config.scopes.districts.geojsonURL, config.scopes.districts.dataURL],
+    (response) => {
+        data.districts = {
+            geojson: response[0],
+            data: response[1],
+        };
+        document.getElementById("spinner").style.display = "none";
+        draw(data.districts.geojson);
+
+        // Stage 2
+        f(URL_host + "/country", (response) => {
+            data.country = response;
+            region_info.addTo(map);
+            region_info.update();
+
+            // Stage 3
+            let urlsToCache = [URL_host + "/world", URL_host + "/states"];
+            f(urlsToCache, (response) => {
+                console.log("cached:", urlsToCache);
+                switcher.addTo(map);
+            });
+        });
+    }
+);
