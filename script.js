@@ -71,7 +71,21 @@ var selected = 0;
 
 var switcher = L.control({ position: "topleft" });
 
-switcher.onAdd = function (map) {
+switcher.onAdd = function () {
+    this._div = redom.el(
+        "div.info.switcher",
+        redom.el(
+            "div.buttons",
+            redom.el("a", redom.el("button", redom.el("h4", "Graphen")), {
+                href: "/graph",
+            })
+        )
+    );
+
+    return this._div;
+};
+
+switcher.update = function () {
     this._div = redom.el(
         "div.info.switcher",
         redom.el(
@@ -149,8 +163,6 @@ switcher.onAdd = function (map) {
             )
         );
     }
-
-    return this._div;
 };
 
 var region_info = L.control({ position: "bottomright" });
@@ -488,6 +500,7 @@ legend.update = function () {
 };
 
 legend.addTo(map);
+switcher.addTo(map);
 
 // Stage 1
 f(
@@ -499,19 +512,25 @@ f(
         };
         document.getElementById("spinner").style.display = "none";
         draw(data.districts.geojson);
-
+    },
+    () => {
+        console.log(1);
         // Stage 2
-        f(URL_host + "/country", (response) => {
-            data.country = response;
-            region_info.addTo(map);
-            region_info.update();
-
-            // Stage 3
-            let urlsToCache = [URL_host + "/world", URL_host + "/states"];
-            f(urlsToCache, (response) => {
-                console.log("cached:", urlsToCache);
-                switcher.addTo(map);
-            });
-        });
+        f(
+            URL_host + "/country",
+            (response) => {
+                data.country = response;
+                region_info.addTo(map);
+                region_info.update();
+            },
+            () => {
+                // Stage 3
+                let urlsToCache = [URL_host + "/world", URL_host + "/states"];
+                f(urlsToCache, (response) => {
+                    console.log("cached:", urlsToCache);
+                    switcher.update();
+                });
+            }
+        );
     }
 );
