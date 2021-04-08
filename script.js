@@ -1,5 +1,5 @@
 var cache = {};
-function f(urls, callback) {
+function f(urls, callback, downloadFinished) {
     if (Array.isArray(urls)) {
         var array = urls;
     } else {
@@ -33,6 +33,8 @@ function f(urls, callback) {
         })
     )
         .then((response) => {
+            if (downloadFinished) downloadFinished();
+
             if (Array.isArray(urls)) {
                 callback(response);
             } else {
@@ -40,6 +42,7 @@ function f(urls, callback) {
             }
         })
         .catch((error) => {
+            if (downloadFinished) downloadFinished();
             console.error("Request failed", error, urls);
         });
 }
