@@ -514,7 +514,6 @@ f(
         draw(data.districts.geojson);
     },
     () => {
-        console.log(1);
         // Stage 2
         f(
             URL_host + "/country",
