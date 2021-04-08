@@ -86,8 +86,7 @@ switcher.onAdd = function () {
 };
 
 switcher.update = function () {
-    this._div = redom.el(
-        "div.info.switcher",
+    redom.setChildren(this._div, [
         redom.el(
             "div.buttons",
             redom.el("a", redom.el("button", redom.el("h4", "Graphen")), {
@@ -95,8 +94,8 @@ switcher.update = function () {
             })
         ),
         redom.el("hr"),
-        (this._selection_container = redom.el("div.selection-container"))
-    );
+        (this._selection_container = redom.el("div.selection-container")),
+    ]);
 
     function handleClick(e) {
         let old_scope = config.series[selected].scope;
