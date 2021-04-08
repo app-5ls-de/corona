@@ -26,13 +26,56 @@
                 text-align: center;
             }
 
-            text.highcharts-title {
+            text.highcharts-title,
+            .links > a {
                 font-size: 24px !important;
             }
+
+            .links > a {
+                display: block;
+                width: min-content;
+            }
+
+            .links {
+                margin: 3rem;
+            }
+
+            a {
+                text-decoration: none;
+                color: #111111;
+                position: relative;
+                white-space: nowrap;
+            }
+
+            a::before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                top: 80%;
+                bottom: 0;
+                left: -0.05em;
+                right: -0.05em;
+                transition: top 180ms cubic-bezier(0, 0.8, 0.1, 1);
+                background-color: rgba(65, 80, 230, 0.5);
+            }
+
+            a:hover::before {
+                top: 0%;
+            }
+
+            a.normal::before,
+            h1 > a::before,
+            h2 > a::before,
+            h3 > a::before,
+            h4 > a::before,
+            h5 > a::before,
+            h6 > a::before {
+                display: none;
+            }
         </style>
-        
-        <link rel="preconnect" href="https://api.corona-zahlen.org">
-        <link rel="preconnect" href="https://api.corona.app.5ls.de">
+
+        <link rel="preconnect" href="https://api.corona-zahlen.org" />
+        <link rel="preconnect" href="https://api.corona.app.5ls.de" />
 
         <title>Corona - Graphen</title>
     </head>
@@ -43,6 +86,21 @@
             <a class="normal" href="/"><img src="/back.svg" alt="" /></a>
         </div>
         <div id="container"></div>
+        <div class="links">
+            <h1>Weitere Graphen</h1>
+            <a
+                href="https://interaktiv.morgenpost.de/corona-impfungen-deutschland-bundeslaender-weltweit/"
+                >Impfmonitor</a
+            >
+            <a
+                href="https://interaktiv.morgenpost.de/corona-deutschland-intensiv-betten-monitor-krankenhaus-auslastung/"
+                >Intensivstationen</a
+            >
+            <a
+                href="https://interaktiv.morgenpost.de/corona-uebersterblichkeit-sterberate-deutschland/"
+                >Übersterblichkeit</a
+            >
+        </div>
         <script src="https://cdn.jsdelivr.net/npm/highcharts@9.0.1/highcharts.min.js"></script>
         <script src="/graph.js"></script>
     </body>
