@@ -285,12 +285,14 @@ function createElToDisplay(label, value, delta) {
     let delta_el;
     if (delta != undefined) {
         let delta_text = "";
-        if (delta >= 0) delta_text = " +" + delta;
-        if (delta < 0) delta_text = " -" + delta;
+        if (delta >= 0) delta_text = " +" + format(delta);
+        if (delta < 0) delta_text = " -" + format(delta);
         delta_el = redom.el("div.delta", delta_text, {
             title: "Differenz zum Vortag",
         });
     }
+
+    if (typeof value == "number") value = format(value);
 
     return redom.el(
         "div",
