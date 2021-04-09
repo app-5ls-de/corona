@@ -161,8 +161,13 @@ var config = {
                 },
                 {
                     min: 0.06,
-                    max: null,
+                    max: 0.07,
                     color: "#274265",
+                },
+                {
+                    min: 0.07,
+                    max: null,
+                    color: "#1d1f4e",
                 },
             ],
         },
