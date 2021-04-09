@@ -443,7 +443,7 @@ info.update = function (props) {
                     (props.proportionBedsAvailable * 100).toFixed(0) + "%"
                 ),
                 createElToDisplay(
-                    "-> mit Covid",
+                    "Intensivbetten mit Covid",
                     (props.proportionBedsCovid * 100).toFixed(0) + "%"
                 ),
                 redom.el(
