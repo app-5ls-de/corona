@@ -161,3 +161,8 @@ body,
         display: none;
     }
 }
+
+.chart {
+    height: 100px;
+    --color: #8bbeee;
+}

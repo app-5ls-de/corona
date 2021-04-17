@@ -420,6 +420,49 @@ info.update = function (props) {
         redom.setChildren(this._div, []);
         let scope = config.series[selected].scope;
         if (scope == "districts") {
+            let el_graph;
+            if (data.districts.history) {
+                let history = data.districts.history[props.ags].history;
+                if (history) {
+                    let array = [];
+                    history.forEach((element) => {
+                        array.push(element.weekIncidence);
+                    });
+
+                    let max = Math.max(...array);
+                    let min = Math.min(...array);
+
+                    let el_tbody = redom.el("tbody");
+
+                    let last = null;
+                    array.forEach((element) => {
+                        let value = (element - min) / (max - min);
+                        value = element / max;
+                        if (last) {
+                            el_tbody.appendChild(
+                                redom.el(
+                                    "tr",
+                                    redom.el("td", {
+                                        style:
+                                            "--start: " +
+                                            last +
+                                            "; --size: " +
+                                            value,
+                                    })
+                                )
+                            );
+                        }
+
+                        last = value;
+                    });
+
+                    el_graph = redom.el(
+                        "div.chart",
+                        redom.el("table.charts-css.area", el_tbody)
+                    );
+                }
+            }
+
             mount(this._div, [
                 redom.el("h4", props.name),
                 createElToDisplay("Inzidenz", props.weekIncidence.toFixed(0)),
@@ -446,6 +489,9 @@ info.update = function (props) {
                     "Intensivbetten mit Covid",
                     (props.proportionBedsCovid * 100).toFixed(0) + "%"
                 ),
+                el_graph && redom.el("hr"),
+                el_graph && redom.el("strong", "Inzidenz letzte 14 Tage:"),
+                el_graph && el_graph,
                 redom.el(
                     "div.date",
                     new Date(
@@ -579,10 +625,22 @@ f(
             () => {
                 // Stage 3
                 let urlsToCache = [URL_host + "/world", URL_host + "/states"];
-                f(urlsToCache, (response) => {
-                    console.log("cached:", urlsToCache);
-                    switcher.update();
-                });
+                f(
+                    urlsToCache,
+                    (response) => {
+                        console.log("cached:", urlsToCache);
+                        switcher.update();
+                    },
+                    () => {
+                        // Stage 4
+                        f(
+                            "https://api.corona-zahlen.org/districts/history/incidence/15",
+                            (response) => {
+                                data.districts.history = response.data;
+                            }
+                        );
+                    }
+                );
             }
         );
     }
