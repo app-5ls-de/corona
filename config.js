@@ -106,6 +106,11 @@ let RateRanges = [
     },
     {
         min: 0.07,
+        max: 0.08,
+        color: "#543D35",
+    },
+    {
+        min: 0.08,
         max: null,
         color: "#020003",
     },
@@ -140,32 +145,32 @@ var config = {
             unit: "%",
             ranges: [
                 {
-                    min: 0.035,
-                    max: 0.04,
+                    min: null,
+                    max: 0.06,
                     color: "#88b9b2",
                 },
                 {
-                    min: 0.04,
-                    max: 0.045,
+                    min: 0.06,
+                    max: 0.065,
                     color: "#6fa9a6",
                 },
                 {
-                    min: 0.045,
-                    max: 0.05,
+                    min: 0.065,
+                    max: 0.07,
                     color: "#3a7e8d",
                 },
                 {
-                    min: 0.05,
-                    max: 0.06,
+                    min: 0.07,
+                    max: 0.075,
                     color: "#316079",
                 },
                 {
-                    min: 0.06,
-                    max: 0.07,
+                    min: 0.075,
+                    max: 0.08,
                     color: "#274265",
                 },
                 {
-                    min: 0.07,
+                    min: 0.08,
                     max: null,
                     color: "#1d1f4e",
                 },
