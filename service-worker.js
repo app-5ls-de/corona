@@ -23,6 +23,7 @@ const PRECACHE_URLS = [
     "https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.js",
     "https://cdn.jsdelivr.net/npm/redom@3.27.1/dist/redom.min.js",
     "https://cdn.jsdelivr.net/npm/highcharts@9.0.1/highcharts.min.js",
+    "https://cdn.jsdelivr.net/npm/charts.css@0.9.0/dist/charts.min.css",
     "/icons/android-chrome-192x192.png",
     "/icons/android-chrome-512x512.png",
     "/icons/maskable_icon.png",
