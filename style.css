@@ -165,4 +165,5 @@ body,
 .chart {
     height: 100px;
     --color: #8bbeee;
+    font-size: initial;
 }
