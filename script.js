@@ -129,7 +129,7 @@ switcher.onAdd = function () {
         "div.info.switcher",
         redom.el(
             "div.buttons",
-            redom.el("a", redom.el("button", redom.el("h4", "Graphen")), {
+            redom.el("a", redom.el("button", redom.el("h4.label", "Graphen")), {
                 href: "/graph",
             })
         )
