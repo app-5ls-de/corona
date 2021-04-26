@@ -209,7 +209,7 @@ switcher.update = function () {
                         checked: i == selected,
                     }
                 ),
-                redom.el("label", element.name, {
+                redom.el("label.label", element.name, {
                     for: "selection-" + i,
                 })
             )

@@ -13,8 +13,8 @@ body,
 }
 
 .location-icon {
-    width: 3rem;
-    height: 3rem;
+    width: 3em;
+    height: 3em;
     background-color: blue;
 }
 
@@ -51,17 +51,9 @@ body,
     border-radius: 5px;
 }
 
-.info.minwidth {
-    min-width: 12rem;
-}
-
 .info h4 {
     margin: 0 0 5px;
     /*  color: #777; */
-}
-
-.info.leaflet-control {
-    font-size: 1rem;
 }
 
 /* .leaflet-control-container>.leaflet-top.leaflet-right,
@@ -102,8 +94,8 @@ body,
 }
 
 .legend > .colorSquare {
-    height: 1rem;
-    width: 1rem;
+    height: 1em;
+    width: 1em;
     display: inline-block;
     opacity: 0.8;
     margin-right: 5px;
@@ -138,32 +130,31 @@ body,
     display: inline;
 }
 
-@media only screen and (max-width: 600px) {
-    .attribution.min-large {
-        display: none;
-    }
-}
-
-@media only screen and (max-width: 500px) {
-    .attribution.min-medium {
-        display: none;
-    }
-}
-
-@media only screen and (min-width: 500px) {
-    .attribution.max-medium {
-        display: none;
-    }
-}
-
-@media only screen and (max-width: 400px) {
-    .attribution.min-small {
-        display: none;
-    }
-}
-
 .chart {
     height: 100px;
     --color: #8bbeee;
     font-size: initial;
+}
+
+@media only screen and (min-width: 500px) {
+    .info.minwidth {
+        min-width: 12em;
+}
+
+    .info.leaflet-control {
+        font-size: 1rem;
+    }
+    
+}
+
+@media only screen and (max-width: 400px) {
+    .label {
+        font-size: smaller;
+    }
+}
+
+@media only screen and (max-height: 575px), only screen and (max-height: 650px) and (min-width: 600px) {
+.chart {
+        display: none;
+    }
 }
