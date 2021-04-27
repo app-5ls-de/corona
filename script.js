@@ -513,7 +513,7 @@ info.update = function (props) {
                     (props.proportionBedsCovid * 100).toFixed(0) + "%"
                 ),
                 el_graph && redom.el("div.chart-container",
-                    redom.el("h4", "Inzidenz letzte 14 Tage:"),
+                    redom.el("h4", "Inzidenz letzte 7 Tage:"),
                     el_graph,
                     redom.el("div.label", "Linien bei 100, 150, 165")),
                 redom.el(
