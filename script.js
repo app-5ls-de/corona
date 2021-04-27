@@ -430,16 +430,14 @@ info.update = function (props) {
                     });
 
                     let max = Math.max(...array);
-                    let min = Math.min(...array);
 
-                    let el_tbody = redom.el("tbody");
+                    let el_area_tbody = redom.el("tbody");
 
                     let last = null;
                     array.forEach((element) => {
-                        let value = (element - min) / (max - min);
-                        value = element / max;
+                        let value = element / max;
                         if (last) {
-                            el_tbody.appendChild(
+                            el_area_tbody.appendChild(
                                 redom.el(
                                     "tr",
                                     redom.el("td", {
@@ -456,9 +454,34 @@ info.update = function (props) {
                         last = value;
                     });
 
+                    let incidence_markers = [100, 150, 165].filter(value => value < max);
+                    
+                    let el_line_tr = redom.el("tr");
+                    let el_line_tbody = redom.el("tbody", el_line_tr);
+
+
+                    incidence_markers.forEach(element => {
+                        let value = element / max;
+
+                        el_line_tr.appendChild(
+                            redom.el("td", {
+                                style:
+                                    "--start: " +
+                                    value +
+                                    "; --size: " +
+                                    value,
+                            })
+                        );
+                    });
+
+
+
                     el_graph = redom.el(
                         "div.chart",
-                        redom.el("table.charts-css.area", el_tbody)
+                        [
+                            redom.el("table.charts-css.area", el_area_tbody),
+                            redom.el("table.charts-css.line", el_line_tbody)
+                        ]
                     );
                 }
             }
@@ -490,9 +513,9 @@ info.update = function (props) {
                     (props.proportionBedsCovid * 100).toFixed(0) + "%"
                 ),
                 el_graph && redom.el("div.chart-container",
-                    redom.el("hr"),
-                    redom.el("strong", "Inzidenz letzte 14 Tage:"),
-                    el_graph),
+                    redom.el("h4", "Inzidenz letzte 14 Tage:"),
+                    el_graph,
+                    redom.el("div.label", "Linien bei 100, 150, 165")),
                 redom.el(
                     "div.date",
                     new Date(
@@ -635,7 +658,7 @@ f(
                     () => {
                         // Stage 4
                         f(
-                            "https://api.corona-zahlen.org/districts/history/incidence/15",
+                            "https://api.corona-zahlen.org/districts/history/incidence/7",
                             (response) => {
                                 data.districts.history = response.data;
                             }
