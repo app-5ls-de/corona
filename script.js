@@ -286,7 +286,7 @@ function createElToDisplay(label, value, delta) {
     if (delta != undefined) {
         let delta_text = "";
         if (delta >= 0) delta_text = " +" + format(delta);
-        if (delta < 0) delta_text = " -" + format(delta);
+        if (delta < 0) delta_text = " -" + format(-delta);
         delta_el = redom.el("div.delta", delta_text, {
             title: "Differenz zum Vortag",
         });
