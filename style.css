@@ -144,7 +144,6 @@ body,
     .info.leaflet-control {
         font-size: 1rem;
     }
-    
 }
 
 @media only screen and (max-width: 400px) {
@@ -154,7 +153,7 @@ body,
 }
 
 @media only screen and (max-height: 575px), only screen and (max-height: 650px) and (min-width: 600px) {
-.chart {
+    .chart-container {
         display: none;
     }
 }

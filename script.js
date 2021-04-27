@@ -489,9 +489,10 @@ info.update = function (props) {
                     "Intensivbetten mit Covid",
                     (props.proportionBedsCovid * 100).toFixed(0) + "%"
                 ),
-                el_graph && redom.el("hr"),
-                el_graph && redom.el("strong", "Inzidenz letzte 14 Tage:"),
-                el_graph && el_graph,
+                el_graph && redom.el("div.chart-container",
+                    redom.el("hr"),
+                    redom.el("strong", "Inzidenz letzte 14 Tage:"),
+                    el_graph),
                 redom.el(
                     "div.date",
                     new Date(
@@ -539,19 +540,19 @@ info.update = function (props) {
                     createElToDisplay(
                         "Infektionsrate",
                         props.casesRate &&
-                            (props.casesRate * 100).toFixed(1) + "%"
+                        (props.casesRate * 100).toFixed(1) + "%"
                     ),
                     createElToDisplay(
                         "Letalitätsrate",
                         props.deathRate &&
-                            (props.deathRate * 100).toFixed(1) + "%"
+                        (props.deathRate * 100).toFixed(1) + "%"
                     ),
                     createElToDisplay("Bevölkerung", props.population),
                     props.people_vaccinated_per_hundred &&
-                        createElToDisplay(
-                            "Impffortschritt",
-                            props.people_vaccinated_per_hundred.toFixed(1) + "%"
-                        ),
+                    createElToDisplay(
+                        "Impffortschritt",
+                        props.people_vaccinated_per_hundred.toFixed(1) + "%"
+                    ),
                     redom.el(
                         "div.date",
                         new Date(props.date).toLocaleDateString()
