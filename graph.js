@@ -151,7 +151,7 @@ f("https://api.corona.app.5ls.de/history", (response) => {
             parseFloat((element.deathRate * 100).toPrecision(3))
         );
     });
-    series.deathRate[0].data[15] = 0;
+    series.deathRate[0].data[16] = 0;
 
     series.cases.push({
         type: "line",
