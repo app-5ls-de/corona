@@ -606,7 +606,7 @@ legend.update = function () {
     if (config.series[selected].unit == "%")
         format = (a) => (a * 100).toFixed(1) + " %";
     config.series[selected].ranges.forEach((element) => {
-        if (element.min != undefined) {
+        if (element.min !== undefined) {
             if (element.max) {
                 text = "<" + format(element.max);
             } else {
