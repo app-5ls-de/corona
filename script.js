@@ -680,6 +680,50 @@ f(
       }
     }
 
+    data.districts.geojson.features.forEach((state) => {
+      if (!state.properties.id && state.properties.name.startsWith("Berlin ")) {
+        let berlin_bezirk = state.properties.name.replace("Berlin ", "");
+        switch (berlin_bezirk) {
+          case "Mitte":
+            state.properties.id = "11001";
+            break;
+          case "Friedrichshain-Kreuzberg":
+            state.properties.id = "11002";
+            break;
+          case "Pankow":
+            state.properties.id = "11003";
+            break;
+          case "Charlottenburg-Wilmersdorf":
+            state.properties.id = "11004";
+            break;
+          case "Spandau":
+            state.properties.id = "11005";
+            break;
+          case "Steglitz-Zehlendorf":
+            state.properties.id = "11006";
+            break;
+          case "Tempelhof-Schöneberg":
+            state.properties.id = "11007";
+            break;
+          case "Neukölln":
+            state.properties.id = "11008";
+            break;
+          case "Treptow-Köpenick":
+            state.properties.id = "11009";
+            break;
+          case "Marzahn-Hellersdorf":
+            state.properties.id = "11010";
+            break;
+          case "Lichtenberg":
+            state.properties.id = "11011";
+            break;
+          case "Reinickendorf":
+            state.properties.id = "11012";
+            break;
+        }
+      }
+    });
+
     document.getElementById("spinner").style.display = "none";
     draw(data.districts.geojson);
   },
