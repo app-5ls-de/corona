@@ -1,59 +1,59 @@
 body {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 html,
 body,
 #map {
-    width: 100vw;
-    height: 100vh;
-    max-width: 100%;
-    max-height: 100%;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .location-icon {
-    width: 3em;
-    height: 3em;
-    background-color: blue;
+  width: 3em;
+  height: 3em;
+  background-color: blue;
 }
 
 @keyframes spinner {
-    0% {
-        transform: translate3d(-50%, -50%, 0) rotate(0deg);
-    }
-    100% {
-        transform: translate3d(-50%, -50%, 0) rotate(360deg);
-    }
+  0% {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
 }
 
 #spinner::before {
-    animation: 1.5s linear infinite spinner;
-    animation-play-state: inherit;
-    border: solid 5px #cfd0d1;
-    border-bottom-color: #1c87c9;
-    border-radius: 50%;
-    content: "";
-    height: 6rem;
-    width: 6rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    will-change: transform;
+  animation: 1.5s linear infinite spinner;
+  animation-play-state: inherit;
+  border: solid 5px #cfd0d1;
+  border-bottom-color: #1c87c9;
+  border-radius: 50%;
+  content: "";
+  height: 6rem;
+  width: 6rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform;
 }
 
 .info {
-    padding: 6px 8px;
-    background: white;
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+  padding: 6px 8px;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }
 
 .info h4 {
-    margin: 0 0 5px;
-    /*  color: #777; */
+  margin: 0 0 5px;
+  /*  color: #777; */
 }
 
 /* .leaflet-control-container>.leaflet-top.leaflet-right,
@@ -62,128 +62,129 @@ body,
 .country_info.leaflet-control,*/
 .infos.leaflet-control,
 .legend.leaflet-control {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 .leaflet-control-container > .leaflet-bottom.leaflet-left {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .leaflet-control.leaflet-control-zoom {
-    height: min-content;
-    margin-top: auto;
+  height: min-content;
+  margin-top: auto;
 }
 
 .switcher > select {
-    font-size: smaller;
-    width: 100%;
-    max-width: 10rem;
+  font-size: smaller;
+  width: 100%;
+  max-width: 10rem;
 }
 
 .switcher > .buttons {
-    text-align: center;
+  text-align: center;
 }
 
 .switcher > .buttons button {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 .switcher > .buttons h4 {
-    margin: 0;
+  margin: 0;
 }
 
 .legend > .colorSquare {
-    height: 1em;
-    width: 1em;
-    display: inline-block;
-    opacity: 0.8;
-    margin-right: 5px;
+  height: 1em;
+  width: 1em;
+  display: inline-block;
+  opacity: 0.8;
+  margin-right: 5px;
 }
 
 .date {
-    text-align: center;
-    font-size: small;
-    color: #717171;
+  text-align: center;
+  font-size: small;
+  color: #717171;
 }
 
 .label,
 .value,
 .delta {
-    display: inline;
+  display: inline;
 }
 
 .label {
-    margin-right: 0.5rem;
-    font-size: small;
+  margin-right: 0.5rem;
+  font-size: small;
 }
 
 .value {
-    float: right;
+  float: right;
 }
 
 .delta {
-    color: grey;
+  color: grey;
 }
 
 .attribution {
-    display: inline;
+  display: inline;
 }
 
 .chart {
-    position: relative;
-    height: 250px;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    height: 100px;
-    --color: #8bbeee;
-    font-size: initial;
+  position: relative;
+  height: 250px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  height: 100px;
+  --color: #8bbeee;
+  font-size: initial;
 }
 
 .chart > table {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 .chart > .area {
-    --color: #8bbeee;
+  --color: #8bbeee;
 }
 
 .chart > .line {
-    --color: #547bba;    
-    --line-size: 1.5px;
+  --color: #547bba;
+  --line-size: 1.5px;
 }
 
 .chart > h4 {
-    margin: 8px 0;
+  margin: 8px 0;
 }
 
 .chart-container > .label {
-    float: left;
+  float: left;
 }
 
 @media only screen and (min-width: 500px) {
-    .info.minwidth {
-        min-width: 12em;
-}
+  .info.minwidth {
+    min-width: 12em;
+  }
 
-    .info.leaflet-control {
-        font-size: 1rem;
-    }
+  .info.leaflet-control {
+    font-size: 1rem;
+  }
 }
 
 @media only screen and (max-width: 400px) {
-    .label {
-        font-size: smaller;
-    }
+  .label {
+    font-size: smaller;
+  }
 }
 
-@media only screen and (max-height: 575px), only screen and (max-height: 650px) and (min-width: 600px) {
-    .chart-container {
-        display: none;
-    }
+@media only screen and (max-height: 575px),
+  only screen and (max-height: 650px) and (min-width: 600px) {
+  .chart-container {
+    display: none;
+  }
 }
