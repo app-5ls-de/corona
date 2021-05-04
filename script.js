@@ -686,10 +686,10 @@ f(
   () => {
     // Stage 2
     f(
-      [URL_api + "/districts", URL_host + "/districts"],
+      [URL_api + "/districts", URL_host + "/districts_beds"],
       (response) => {
         data.districts.data.cases = response[0].data;
-        data.districts.data.divi = response[1].districts;
+        data.districts.data.divi = response[1].data;
 
         for (const ags in data.districts.data.cases) {
           if (Object.hasOwnProperty.call(data.districts.data.cases, ags)) {
