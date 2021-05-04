@@ -1,3 +1,6 @@
+var URL_host = "https://api.corona.app.5ls.de";
+var URL_api = "https://api.corona-zahlen.org";
+
 function sma(arr, range, format) {
   if (!Array.isArray(arr)) {
     throw TypeError("expected first argument to be an array");
@@ -24,8 +27,19 @@ function sma(arr, range, format) {
   return res;
 }
 
-function f(url, callback) {
-  fetch(url)
+var cache = {};
+function f(urls, callback, downloadFinished) {
+  if (Array.isArray(urls)) {
+    var array = urls;
+  } else {
+    var array = [urls];
+  }
+  Promise.all(
+    array.map((url) => {
+      if (cache[url]) {
+        return Promise.resolve(cache[url]);
+      } else {
+        return fetch(url)
     .then((response) => {
       if (response.ok) {
         return Promise.resolve(response);
@@ -36,9 +50,27 @@ function f(url, callback) {
     .then((response) => {
       return response.json();
     })
-    .then(callback)
+          .then((response) => {
+            if (url.startsWith(URL_host) || url.startsWith(URL_api)) {
+              cache[url] = response;
+            }
+            return response;
+          });
+      }
+    })
+  )
+    .then((response) => {
+      if (downloadFinished) downloadFinished();
+
+      if (Array.isArray(urls)) {
+        callback(response);
+      } else {
+        callback(response[0]);
+      }
+    })
     .catch((error) => {
-      console.log("Request failed", error);
+      if (downloadFinished) downloadFinished();
+      console.error("Request failed", error, urls);
     });
 }
 

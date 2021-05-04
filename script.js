@@ -22,7 +22,7 @@ function f(urls, callback, downloadFinished) {
             return response.json();
           })
           .then((response) => {
-            if (url.startsWith(URL_host)) {
+            if (url.startsWith(URL_host) || url.startsWith(URL_api)) {
               cache[url] = response;
             }
             return response;
