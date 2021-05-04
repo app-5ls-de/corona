@@ -757,7 +757,6 @@ f(
                 vaccinations: response[1].data,
               },
             };
-            data.country.data.vaccinations.states = undefined;
 
             const population = 83783945;
 
