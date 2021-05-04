@@ -219,7 +219,7 @@ region_info.update = function () {
   let scope = config.series[selected].scope;
   redom.setChildren(this._div, []);
   if (scope == "world") {
-    const world_data = data.world.data.OWID_WRL;
+    const world_data = data.world.data.cases.OWID_WRL;
     mount(region_info._div, [
       redom.el("h4", "Weltweit"),
       createElToDisplay("Bevölkerung", world_data.population),
@@ -827,6 +827,11 @@ f(
                   },
                   geojson: response[4],
                 };
+
+                data.world.geojson.features = data.world.geojson.features.filter(
+                  (feature) => feature.properties.id != "ATA"
+                );
+
                 switcher.update();
               }
             );
