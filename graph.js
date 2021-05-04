@@ -40,16 +40,16 @@ function f(urls, callback, downloadFinished) {
         return Promise.resolve(cache[url]);
       } else {
         return fetch(url)
-    .then((response) => {
-      if (response.ok) {
-        return Promise.resolve(response);
-      } else {
-        return Promise.reject(new Error(response.statusText));
-      }
-    })
-    .then((response) => {
-      return response.json();
-    })
+          .then((response) => {
+            if (response.ok) {
+              return Promise.resolve(response);
+            } else {
+              return Promise.reject(new Error(response.statusText));
+            }
+          })
+          .then((response) => {
+            return response.json();
+          })
           .then((response) => {
             if (url.startsWith(URL_host) || url.startsWith(URL_api)) {
               cache[url] = response;
@@ -134,83 +134,99 @@ let div_weekIncidence = document.createElement("div");
 div_weekIncidence.id = "weekIncidence";
 div_container.appendChild(div_weekIncidence);
 
-f("https://api.corona.app.5ls.de/history", (response) => {
-  let labels = [];
-  let series = {
-    cases: [
-      {
-        type: "scatter",
-        name: "Datenpunkte",
-        data: [],
-        color: "#cccccc",
-        marker: {
-          radius: 3,
+f(
+  [
+    "https://api.corona-zahlen.org/germany/history/cases",
+    "https://api.corona-zahlen.org/germany/history/deaths",
+  ],
+  (response) => {
+    let labels = [];
+    let series = {
+      cases: [
+        {
+          type: "scatter",
+          name: "Datenpunkte",
+          data: [],
+          color: "#cccccc",
+          marker: {
+            radius: 3,
+          },
         },
-      },
-    ],
-    deaths: [
-      {
-        type: "scatter",
-        name: "Datenpunkte",
-        data: [],
-        color: "#cccccc",
-        marker: {
-          radius: 3,
+      ],
+      deaths: [
+        {
+          type: "scatter",
+          name: "Datenpunkte",
+          data: [],
+          color: "#cccccc",
+          marker: {
+            radius: 3,
+          },
         },
-      },
-    ],
-    deathRate: [
-      {
-        type: "scatter",
-        name: "Datenpunkte",
-        data: [],
-        color: "#cccccc",
-        marker: {
-          radius: 3,
+      ],
+      deathRate: [
+        {
+          type: "scatter",
+          name: "Datenpunkte",
+          data: [],
+          color: "#cccccc",
+          marker: {
+            radius: 3,
+          },
         },
-      },
-    ],
-  };
+      ],
+    };
 
-  response.data.forEach((element) => {
-    let dateSplit = element.date.split("-");
-    let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
+    response[0].data.forEach((element) => {
+      let dateSplit = element.date.split("-");
+      let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
 
-    labels.push(label);
-    series.cases[0].data.push(element.cases);
-    series.deaths[0].data.push(element.deaths);
-    series.deathRate[0].data.push(
-      parseFloat((element.deathRate * 100).toPrecision(3))
-    );
-  });
-  series.deathRate[0].data[16] = 0;
+      labels.push(label);
+      series.cases[0].data.push(element.cases);
+    });
 
-  series.cases.push({
-    type: "line",
-    name: "7-Tages Durchschnitt",
-    data: sma(series.cases[0].data, 7),
-  });
-  series.deaths.push({
-    type: "line",
-    name: "7-Tages Durchschnitt",
-    data: sma(series.deaths[0].data, 7),
-  });
-  series.deathRate.push({
-    type: "line",
-    name: "7-Tages Durchschnitt",
-    data: sma(series.deathRate[0].data, 7, (a) => parseFloat(a.toPrecision(3))),
-  });
+    response[1].data.forEach((element) => {
+      series.deaths[0].data.push(element.deaths);
 
-  plot("cases", "Fälle", "Fälle", labels, series.cases);
-  plot("deaths", "Todesfälle", "Fälle", labels, series.deaths);
-  plot(
-    "deathRate",
-    "Letalitätsrate",
-    "Letalitätsrate in %",
-    labels,
-    series.deathRate
-  );
-});
+      /* if (element.cases != null && element.deaths != null)
+        element.deathRate = element.deaths / element.cases;
+
+      series.deathRate[0].data.push(
+        parseFloat((element.deathRate * 100).toPrecision(3))
+      ); */
+    });
+
+   /*  series.deathRate[0].data[16] = 0; */
+
+    series.cases.push({
+      type: "line",
+      name: "7-Tages Durchschnitt",
+      data: sma(series.cases[0].data, 7),
+    });
+    series.deaths.push({
+      type: "line",
+      name: "7-Tages Durchschnitt",
+      data: sma(series.deaths[0].data, 7),
+    });
+    /* series.deathRate.push({
+      type: "line",
+      name: "7-Tages Durchschnitt",
+      data: sma(series.deathRate[0].data, 7, (a) =>
+        parseFloat(a.toPrecision(3))
+      ),
+    }); */
+
+    plot("cases", "Fälle", "Fälle", labels, series.cases);
+    plot("deaths", "Todesfälle", "Fälle", labels, series.deaths);
+    /* plot(
+      "deathRate",
+      "Letalitätsrate",
+      "Letalitätsrate in %",
+      labels,
+      series.deathRate
+    ); */
+  }
+);
 
 f("https://api.corona-zahlen.org/vaccinations/history", (response) => {
   let labels = [];
