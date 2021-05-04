@@ -177,26 +177,58 @@ f(
       ],
     };
 
-    response[0].data.forEach((element) => {
+    //----
+
+    const cases = response[0].data;
+    const deaths = response[1].data;
+
+    let dates = {};
+
+    cases.forEach((element) => {
+      if (!dates[element.date]) dates[element.date] = {};
+      dates[element.date].cases = element.cases;
+    });
+
+    deaths.forEach((element) => {
+      if (!dates[element.date]) dates[element.date] = {};
+      dates[element.date].deaths = element.deaths;
+    });
+
+    const population = 83783945;
+    for (const date in dates) {
+      if (Object.hasOwnProperty.call(dates, date)) {
+        const element = dates[date];
+
+        /* if (population != null && element.cases != null)
+              element.casesRate = element.cases / population; */
+        if (element.cases != null && element.deaths != null)
+          element.deathRate = element.deaths / element.cases;
+      }
+    }
+
+    let combined = [];
+
+    for (const key in dates) {
+      if (dates.hasOwnProperty(key)) {
+        dates[key].date = key;
+        combined.push(dates[key]);
+      }
+    }
+
+    //-----
+
+    combined.forEach((element) => {
       let dateSplit = element.date.split("-");
       let label = dateSplit[2].split("T")[0] + "." + dateSplit[1];
 
       labels.push(label);
       series.cases[0].data.push(element.cases);
-    });
-
-    response[1].data.forEach((element) => {
       series.deaths[0].data.push(element.deaths);
-
-      /* if (element.cases != null && element.deaths != null)
-        element.deathRate = element.deaths / element.cases;
-
       series.deathRate[0].data.push(
         parseFloat((element.deathRate * 100).toPrecision(3))
-      ); */
+      );
     });
-
-   /*  series.deathRate[0].data[16] = 0; */
+    series.deathRate[0].data[16] = 0;
 
     series.cases.push({
       type: "line",
@@ -208,23 +240,23 @@ f(
       name: "7-Tages Durchschnitt",
       data: sma(series.deaths[0].data, 7),
     });
-    /* series.deathRate.push({
+    series.deathRate.push({
       type: "line",
       name: "7-Tages Durchschnitt",
       data: sma(series.deathRate[0].data, 7, (a) =>
         parseFloat(a.toPrecision(3))
       ),
-    }); */
+    });
 
     plot("cases", "Fälle", "Fälle", labels, series.cases);
     plot("deaths", "Todesfälle", "Fälle", labels, series.deaths);
-    /* plot(
+    plot(
       "deathRate",
       "Letalitätsrate",
       "Letalitätsrate in %",
       labels,
       series.deathRate
-    ); */
+    );
   }
 );
 
