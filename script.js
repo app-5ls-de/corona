@@ -513,7 +513,8 @@ info.update = function (id) {
             el_graph,
             redom.el("div.label", "Linien bei 100, 150, 165")
           ),
-      ]);
+        ].filter((el) => el)
+      );
     } else if (scope == "states") {
       const props = {
         cases: getValue("cases", id),
@@ -545,7 +546,8 @@ info.update = function (id) {
           "div.date",
           new Date(data.states.data.lastUpdate).toLocaleDateString()
         ), */
-      ]);
+        ].filter((el) => el)
+      );
     } else if (scope == "world") {
       const props = {
         world: getValue("cases", id),
