@@ -151,31 +151,31 @@ var config = {
       ranges: [
         {
           min: null,
-          max: 0.07,
+          max: 0.14,
           color: "#88b9b2",
         },
         {
-          min: 0.07,
-          max: 0.08,
+          min: 0.14,
+          max: 0.16,
           color: "#6fa9a6",
         },
         {
-          min: 0.08,
-          max: 0.09,
+          min: 0.16,
+          max: 0.18,
           color: "#3a7e8d",
         },
         {
-          min: 0.09,
-          max: 0.1,
+          min: 0.18,
+          max: 0.20,
           color: "#316079",
         },
         {
-          min: 0.1,
-          max: 0.11,
+          min: 0.20,
+          max: 0.22,
           color: "#274265",
         },
         {
-          min: 0.11,
+          min: 0.22,
           max: null,
           color: "#1d1f4e",
         },
