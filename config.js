@@ -160,22 +160,22 @@ var config = {
           color: "#6fa9a6",
         },
         {
+          min: 0.37,
+          max: 0.40,
+          color: "#3a7e8d",
+        },
+        {
           min: 0.40,
           max: 0.43,
-          color: "#3a7e8d",
+          color: "#316079",
         },
         {
           min: 0.43,
           max: 0.46,
-          color: "#316079",
-        },
-        {
-          min: 0.46,
-          max: 0.49,
           color: "#274265",
         },
         {
-          min: 0.49,
+          min: 0.46,
           max: null,
           color: "#1d1f4e",
         },
