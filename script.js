@@ -46,6 +46,7 @@ function f(urls, callback, downloadFinished) {
 }
 
 function mount(parent, childs) {
+  childs.filter((el) => el)
   if (childs.length) {
     childs.forEach((child) => {
       redom.mount(parent, child);
@@ -307,7 +308,7 @@ function style(feature) {
     feature.properties.id,
     config.series[selected].key
   );
-  if (value) {
+  if (value != undefined) {
     config.series[selected].ranges.forEach((element) => {
       if (element.min <= value) {
         if (!element.max || value < element.max) color = element.color;
@@ -411,6 +412,8 @@ info.update = function (id) {
     this._div.style.display = "";
     redom.setChildren(this._div, []);
     let scope = config.series[selected].scope;
+
+    let incidence_markers;
     if (scope == "districts") {
       let el_graph;
       const history = getValue("incidence", id, "history");
@@ -441,7 +444,7 @@ info.update = function (id) {
           last = value;
         });
 
-        let incidence_markers = [100, 150, 165].filter((value) => value < max);
+        incidence_markers = [100, 150, 165].filter((value) => value < max);
 
         let el_line_tr = redom.el("tr");
         let el_line_tbody = redom.el("tbody", el_line_tr);
@@ -506,12 +509,12 @@ info.update = function (id) {
             "Intensivbetten mit Covid",
             (props.divi.proportionBedsCovid * 100).toFixed(0) + "%"
           ),
-        el_graph &&
+        el_graph && incidence_markers &&
           redom.el(
             "div.chart-container",
             redom.el("h4", "Inzidenz letzte 7 Tage:"),
             el_graph,
-            redom.el("div.label", "Linien bei 100, 150, 165")
+            redom.el("div.label", "Linien bei "+ ", ".join(incidence_markers))
           ),
         ].filter((el) => el)
       );
