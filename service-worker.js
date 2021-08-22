@@ -1,10 +1,56 @@
----
----
-const PRECACHE = 'precache-v{{ "now" | date: "%s"}}';
-const RUNTIME = "runtime";
+importScripts(
+  "https://storage.googleapis.com/workbox-cdn/releases/6.2.4/workbox-sw.js"
+);
+const { registerRoute, setDefaultHandler } = workbox.routing;
+const { StaleWhileRevalidate, CacheFirst } = workbox.strategies;
+const { ExpirationPlugin } = workbox.expiration;
+const { cacheNames, setCacheNameDetails } = workbox.core;
 
-// A list of local resources we always want to be cached.
-const PRECACHE_URLS = [
+setCacheNameDetails({ suffix: "v1" });
+cacheNames.expiration = cacheNames.prefix + "-expiration-" + cacheNames.suffix;
+
+registerRoute(
+  ({ url }) =>
+    ["https://cdn.jsdelivr.net"].includes(url.origin) ||
+    url.href.endsWith(".geo.json"),
+  new CacheFirst()
+);
+
+registerRoute(
+  ({ url }) => url.origin == location.origin,
+  new StaleWhileRevalidate()
+);
+
+registerRoute(
+  ({ url }) =>
+    ["https://api.corona-zahlen.org", "https://api.corona.app.5ls.de"].includes(
+      url.origin
+    ),
+  new CacheFirst({
+    cacheName: cacheNames.expiration,
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: 2 * 60 * 60,
+        matchOptions: { ignoreVary: true },
+      }),
+    ],
+  })
+);
+
+setDefaultHandler(
+  new StaleWhileRevalidate({
+    cacheName: cacheNames.expiration,
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: 1 * 60 * 60,
+        matchOptions: { ignoreVary: true },
+      }),
+    ],
+  })
+);
+
+self.addEventListener("install", (event) => {
+  const urls = [
     "/",
     "/index.html",
     "/404.html",
@@ -35,69 +81,24 @@ const PRECACHE_URLS = [
     "/icons/mstile-70x70.png",
     "/icons/mstile-150x150.png",
     "/icons/mstile-310x310.png",
-];
-
-// The install handler takes care of precaching the resources we always need.
-self.addEventListener("install", (event) => {
-    event.waitUntil(
-        caches
-            .open(PRECACHE)
-            .then((cache) => cache.addAll(PRECACHE_URLS))
-            .then(self.skipWaiting())
-    );
+  ];
+  const cacheName = cacheNames.runtime;
+  event.waitUntil(caches.open(cacheName).then((cache) => cache.addAll(urls)));
 });
 
-// The activate handler takes care of cleaning up old caches.
 self.addEventListener("activate", (event) => {
-    const currentCaches = [PRECACHE];
-    event.waitUntil(
-        caches
-            .keys()
-            .then((cacheNames) => {
-                return cacheNames.filter(
-                    (cacheName) => !currentCaches.includes(cacheName)
-                );
-            })
-            .then((cachesToDelete) => {
-                return Promise.all(
-                    cachesToDelete.map((cacheToDelete) => {
-                        return caches.delete(cacheToDelete);
-                    })
-                );
-            })
-            .then(() => self.clients.claim())
-    );
-});
-
-// The fetch handler serves responses for same-origin resources from a cache.
-// If no response is found, it populates the runtime cache with the response
-// from the network before returning it to the page.
-self.addEventListener("fetch", (event) => {
-    // Skip cross-origin requests, like those for Google Analytics.
-    if (
-        event.request.url.startsWith(self.location.origin) ||
-        event.request.url.startsWith("https://cdn.jsdelivr.net/") ||
-        event.request.url.endsWith(".geojson")
-    ) {
-        event.respondWith(
-            caches
-                .match(event.request, { ignoreSearch: true })
-                .then((cachedResponse) => {
-                    if (cachedResponse) {
-                        return cachedResponse;
-                    }
-
-                    return caches.open(RUNTIME).then((cache) => {
-                        return fetch(event.request).then((response) => {
-                            // Put a copy of the response in the runtime cache.
-                            return cache
-                                .put(event.request, response.clone())
-                                .then(() => {
-                                    return response;
-                                });
-                        });
-                    });
-                })
-        );
-    }
+  event.waitUntil(
+    (async function () {
+      const userCacheNames = await caches.keys();
+      const cacheNamesArray = Object.values(cacheNames);
+      await Promise.all(
+        userCacheNames.map(async (cacheName) => {
+          if (!cacheNamesArray.includes(cacheName)) {
+            return await caches.delete(cacheName);
+          }
+          return await Promise.resolve();
+        })
+      );
+    })()
+  );
 });
