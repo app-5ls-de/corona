@@ -228,7 +228,9 @@ f(
         parseFloat((element.deathRate * 100).toPrecision(3))
       );
     });
-    series.deathRate[0].data[16] = 0;
+    
+    // remove unrealistically high values in the first days
+    for (let i = 0; i < 20; i++) series.deathRate[0].data[i] = 0;
 
     series.cases.push({
       type: "line",
