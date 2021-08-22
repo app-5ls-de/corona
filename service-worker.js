@@ -52,8 +52,7 @@ setDefaultHandler(
 self.addEventListener("install", (event) => {
   const urls = [
     "/",
-    "/index.html",
-    "/404.html",
+    "/404",
     "/config.js",
     "/script.js",
     "/style.css",
@@ -68,19 +67,8 @@ self.addEventListener("install", (event) => {
     "https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.css",
     "https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.js",
     "https://cdn.jsdelivr.net/npm/redom@3.27.1/dist/redom.min.js",
-    "https://cdn.jsdelivr.net/npm/highcharts@9.0.1/highcharts.min.js",
+    "https://cdn.jsdelivr.net/npm/highcharts@9.2.1/highcharts.min.js",
     "https://cdn.jsdelivr.net/npm/charts.css@0.9.0/dist/charts.min.css",
-    "/icons/android-chrome-192x192.png",
-    "/icons/android-chrome-512x512.png",
-    "/icons/maskable_icon.png",
-    "/icons/apple-touch-icon.png",
-    "/icons/favicon-32x32.png",
-    "/icons/favicon-16x16.png",
-    "/icons/safari-pinned-tab.svg",
-    "/icons/browserconfig.xml",
-    "/icons/mstile-70x70.png",
-    "/icons/mstile-150x150.png",
-    "/icons/mstile-310x310.png",
   ];
   const cacheName = cacheNames.runtime;
   event.waitUntil(caches.open(cacheName).then((cache) => cache.addAll(urls)));
