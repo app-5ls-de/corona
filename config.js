@@ -200,15 +200,15 @@ var config = {
   scopes: {
     districts: {
       dataURLs: [URL_host + "/districts"],
-      geojsonURL: URL_host + "/districts.geojson",
+      geojsonURL: "/districts.geo.json",
     },
     states: {
       dataURLs: [URL_host + "/states"],
-      geojsonURL: URL_host + "/states.geojson",
+      geojsonURL: "/states.geo.json",
     },
     world: {
       dataURLs: [URL_host + "/world"],
-      geojsonURL: URL_host + "/world.geojson",
+      geojsonURL: "/world.geo.json",
     },
   },
 };
