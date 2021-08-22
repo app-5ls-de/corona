@@ -509,12 +509,12 @@ info.update = function (id) {
             "Intensivbetten mit Covid",
             (props.divi.proportionBedsCovid * 100).toFixed(0) + "%"
           ),
-        el_graph && incidence_markers &&
+        el_graph &&
           redom.el(
             "div.chart-container",
             redom.el("h4", "Inzidenz letzte 7 Tage:"),
             el_graph,
-            redom.el("div.label", "Linien bei "+ ", ".join(incidence_markers))
+            incidence_markers?.length > 0 && redom.el("div.label", "Linien bei "+ incidence_markers.join(", "))
           ),
         ].filter((el) => el)
       );
