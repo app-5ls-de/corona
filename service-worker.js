@@ -3,8 +3,9 @@ importScripts(
 );
 const { registerRoute, setDefaultHandler } = workbox.routing;
 const { StaleWhileRevalidate, CacheFirst } = workbox.strategies;
-const { ExpirationPlugin } = workbox.expiration;
 const { cacheNames, setCacheNameDetails } = workbox.core;
+const { ExpirationPlugin } = workbox.expiration;
+const { CacheableResponsePlugin } = workbox.cacheableResponse;
 
 setCacheNameDetails({ suffix: "v1" });
 cacheNames.expiration = cacheNames.prefix + "-expiration-" + cacheNames.suffix;
@@ -33,6 +34,7 @@ registerRoute(
         maxAgeSeconds: 2 * 60 * 60,
         matchOptions: { ignoreVary: true },
       }),
+      new CacheableResponsePlugin({ statuses: [200] }),
     ],
   })
 );
