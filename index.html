@@ -41,11 +41,11 @@
     <meta name="msapplication-config" content="/icons/browserconfig.xml" />
     <meta name="theme-color" content="#ffffff" />
 
-    <link
+    <link crossorigin="anonymous"
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.css"
     />
-    <link
+    <link crossorigin="anonymous"
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/charts.css@0.9.0/dist/charts.min.css"
     />
@@ -59,24 +59,13 @@
     <div id="map"></div>
 
     <div id="spinner"></div>
-    <script src="https://cdn.jsdelivr.net/npm/redom@3.27.1/dist/redom.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.js"></script>
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/redom@3.27.1/dist/redom.min.js"></script>
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.min.js"></script>
     <script src="/config.js"></script>
     <script src="/script.js"></script>
     <script>
       if ("serviceWorker" in navigator) {
-        if (navigator.serviceWorker.controller) {
-          console.log("[ServiceWorker] active service worker found");
-        } else {
-          // Register the service worker
-          navigator.serviceWorker
-            .register("/service-worker.js", {
-              scope: "/",
-            })
-            .then(function (reg) {
-              console.log("[ServiceWorker] Service worker registered.", reg);
-            });
-        }
+        navigator.serviceWorker.register("/service-worker.js");
       }
     </script>
   </body>
